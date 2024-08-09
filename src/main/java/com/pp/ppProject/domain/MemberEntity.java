@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "member")
+@Table(name = "member") // table명 설정
 public class MemberEntity {
 
    @Id // 기본키 할당
