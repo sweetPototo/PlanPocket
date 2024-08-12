@@ -46,5 +46,4 @@ public class MemberEntity {
    
    @DateTimeFormat(pattern = "yy/MM/dd")
    private Date memberOutDate;
-  
 }
