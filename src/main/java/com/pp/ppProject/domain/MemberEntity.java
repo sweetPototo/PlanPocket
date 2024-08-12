@@ -1,4 +1,3 @@
-//domain
 package com.pp.ppProject.domain;
 
 import java.sql.Date;
@@ -9,15 +8,20 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
-
 @Entity
 @Getter
 @Builder
 @Table(name = "member")
+@SequenceGenerator(
+    name = "MEMBER_SEQ_GENERATOR", 
+    sequenceName = "member_seq", // 사용할 시퀀스 이름
+    initialValue = 1, // 시퀀스 시작 값
+    allocationSize = 1 // 증가 값
+)
 public class MemberEntity {
 
    @Id // 기본키 할당
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
    private int memberNo;
    
    @Column(length = 50)
