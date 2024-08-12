@@ -36,23 +36,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<tr>
-  <th>
+	<div>
   	<label for="name">이&emsp;름</label>
-  </th>
-  <td>
     <input id="name" type="text" name="sm_name" placeholder="이름을 설정해주세요." maxlength="8" title="8자 까지 입력" required autofocus/>
     <span class="point successNameChk">이름은 2자 이상 8자 이하로 설정해주시기 바랍니다.</span>
     <input type="hidden" id="nameDoubleChk"/>
-  </td>
-  </tr>
-  <tr>
-	<th>
+  </div>
+  <div>
 	  <label for="id">아 이 디</label>
-	</th>
-	<td>
 	  <input id="id" type="text" name="sm_id" placeholder="아이디를 입력해주세요." title="특수문자는 사용할 수 없습니다">
-	</td>
-</tr>
+</div>
 </body>
 </html>
