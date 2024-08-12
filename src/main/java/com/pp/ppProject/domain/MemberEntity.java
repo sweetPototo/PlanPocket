@@ -10,6 +10,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
+
 @Builder
 @Table(name = "member")
 @SequenceGenerator(
@@ -18,6 +19,10 @@ import lombok.Getter;
     initialValue = 1, // 시퀀스 시작 값
     allocationSize = 1 // 증가 값
 )
+
+@Setter
+@Table(name = "member") // table명 설정
+
 public class MemberEntity {
 
    @Id // 기본키 할당
