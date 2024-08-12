@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Table(name = "schedule") // table명을 schedule 로 지정
 @Entity // Entity임을 명시, Entity명 schedule
 @Getter // getter 메소드 생성
 @Builder // Builder 사용
@@ -21,9 +22,9 @@ import lombok.NoArgsConstructor;
 	    initialValue = 1,
 	    allocationSize = 1 
 	)
-@Table(name = "schedule") // table명을 schedule 로 지정
 @AllArgsConstructor // 필드의 모든 값을 매개변수로 받는 생성자 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자 생성, 같은 패키지나 상송받은 클래스만 생성자 접근
+
 public class ScheduleEntity {
 	
 	@Id // 기본키 할당
