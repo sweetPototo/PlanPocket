@@ -23,11 +23,6 @@ import lombok.NoArgsConstructor;
 	    allocationSize = 1 
 	)
 
-@AllArgsConstructor // 필드의 모든 값을 매개변수로 받는 생성자 생성
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자 생성, 같은 패키지나 상송받은 클래스만 생성자 접근
-
-
-@Table(name = "schedule")
 @AllArgsConstructor //필드의 모든 값을 매개변수로 받는 생성자 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 생성, 같은 패키지나 상송받은 클래스만 생성자 접근
 
