@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @SequenceGenerator(
-	    name = "SCHEDULE_SEQ_GENERATOR", 
+	    name = "SCHEDULE_SEQ_GENERATOR", // 사용할 시퀀스 이름
 	    sequenceName = "schedule_seq",
 	    initialValue = 1,
 	    allocationSize = 1 
