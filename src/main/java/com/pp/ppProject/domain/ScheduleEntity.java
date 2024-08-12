@@ -7,10 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Setter;
+import lombok.Getter;
 
 @Entity
-@Setter
+@Getter
 @Builder
 @SequenceGenerator(
 	    name = "SCHEDULE_SEQ_GENERATOR", 
