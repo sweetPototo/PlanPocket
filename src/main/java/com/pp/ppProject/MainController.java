@@ -2,23 +2,23 @@ package com.pp.ppProject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import jakarta.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class MainController {
+	
+	private final Logger Logger = LoggerFactory.getLogger(MainController.class.getName());
 
 	@GetMapping(value = { "/", "/main" } )
 	   public String home() {
 	      return "main/main";
 	   }
 	
-	@GetMapping(value = { "/transaction" } )
+	@GetMapping("/information")
 	   public String transaction() {
-	      return "transaction/transaction_input";
+	      return "information/information_input";
 	   }
-	
-//	@GetMapping("main.do")
-//		public String main(HttpServletRequest req) {
-//			return "test";
-//		}
+
 }

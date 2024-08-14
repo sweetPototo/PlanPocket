@@ -35,8 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# src/main/resources 내의 특정 디렉토리 포함시키기
-!**/src/main/resources/
-!**/src/main/resources/js/
-!**/src/main/resources/static/ 
