@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity //Entity임을 명시, Entity명 account
 @Table(name = "account")  //table명을 acount로 지정
 @Getter  //getter 메소드 생성
-@SequenceGenerator(  //시퀀스 생성기 설
+@SequenceGenerator(  //시퀀스 생성기 설정
 		name = "ACCOUNT_SEQ_GENERATOR",
 		sequenceName = "ACCOUNT_SEQ"
 )
