@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/infomation"> 거래 입력하기 </a>
+<a href="${pageContext.request.contextPath}/transaction"> 거래 입력하기 </a>
 </body>
 </html>
