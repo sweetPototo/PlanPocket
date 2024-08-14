@@ -8,21 +8,21 @@
 <title>[PP] 가계부 입력</title>
 <style>
     #full {
-        width: 600px;
-        height: 600px;
+        width: 100%;
+        height: 100%;
         background-color: grey;
     }
     #screen_left {
-        width: 200px;
-        height: 600px;
+        width: 50%;
+        height: 100%;
         background-color: black;
         float: left;
     }
     #screen_right {
-        width: 400px;
-        height: 600px;
+        width: 50%;
+        height: 100%;
         background-color: blue;
-        float: left;
+        float: right;
     }
 </style>
 </head>
@@ -30,15 +30,19 @@
 <body>
 	<div id="full">
 		<div id="screan_left">
-			<div style="display:table; width:400px;">
+			<div style="display:table; width:100%;">
 				<div style="display:table-row">
-					<div style="display:table-cell"> </div>
+					<div style="display:table-cell"> 계좌 1</div>
+					<div style="display:table-cell"> 계좌 2</div>
+					<div style="display:table-cell"> 계좌 3</div>
+					<div style="display:table-cell"> 계좌 4</div>
+					<div style="display:table-cell"> 계좌 5</div>
 				</div>
 			</div>
 		</div>
 		<div id="screan_right">
 			<form name="input" method="post" action="${pageContext.request.contextPath}/">
-			<div style="display:table; width:400px;">
+			<div style="display:table; width:100%;">
 				<div style="display:table-row">
 					<div style="display:table-cell"> 거래 일자 </div>
 					<div style="display:table-cell"> 
