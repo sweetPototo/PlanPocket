@@ -63,6 +63,7 @@
         }
     </style>
 </head>
+<%@ include file="main_top.jsp"%>
 <body>
     <div class="login-container">
         <h2>PlanPocket</h2>
@@ -75,6 +76,5 @@
             <p>계정이 없으신가요? <a href="register">회원가입</a></p>
         </div>
     </div>
-    <a href="${pageContext.request.contextPath}/infomation"> 거래 입력하기 </a>
 </body>
 </html>

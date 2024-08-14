@@ -12,6 +12,11 @@ public class MainController {
 	      return "main/main";
 	   }
 	
+	@GetMapping(value = { "/transaction" } )
+	   public String transaction() {
+	      return "transaction/transaction_input";
+	   }
+	
 //	@GetMapping("main.do")
 //		public String main(HttpServletRequest req) {
 //			return "test";
