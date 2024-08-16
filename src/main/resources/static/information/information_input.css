@@ -43,4 +43,6 @@ input {
 
 .button {
 	float: right;
+	padding: 15px 29px;
+	font-size: 13px;
 }

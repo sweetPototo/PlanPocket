@@ -65,10 +65,8 @@
 					<label>내용</label> <input type="text" name="tranDetail">
 				</div>
 				<div class="form-row">
-				<div class="button">
-					<button type="button" onclick="check()"> 입력 </button>
-					<button type="button" onclick="reseting()"> 초기화 </button>
-				</div>
+					<button type="button" class="button" onclick="check()"> 입력 </button>
+					<button type="button" class="button" onclick="reseting()"> 초기화 </button>
 				</div>
 			</div>
 		</div>
