@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,47 +9,13 @@
 <title>[PP] 가계부 입력</title>
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/information/information_input.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/calender.js"></script>
-<style>
-#full {
-	width: 100%;
-	height: 100%;
-	background-color: grey;
-}
 
-#screen_left {
-	width: 48%;
-	height: 100%;
-	background-color: black;
-	float: left;
-	padding: 10px;
-}
-
-#screen_right {
-	width: 48%;
-	height: 100%;
-	background-color: blue;
-	float: right;
-	padding: 10px;
-}
-
-.account, .form-row {
-	margin-bottom: 10px;
-	color: white;
-}
-
-label {
-	display: inline-block;
-	width: 100px;
-}
-
-input {
-	width: 200px;
-}
-</style>
 
 </head>
 <%@ include file="information_top.jsp"%>
@@ -87,7 +53,11 @@ input {
 					<label>결제 수단</label> <input type="text" name="paymentMethod">
 				</div>
 				<div class="form-row">
-					<label>소비 카테고리</label> <input type="text" name="tranCategory">
+					<label>소비 카테고리</label> <select name="tranCategory">
+						<c:forEach var="cate" items="${tCate}">
+							<option value="${cate.tranCateCode}">${cate.tranCateName}
+						</c:forEach>
+					</select>
 				</div>
 				<div class="form-row">
 					<label>금액</label> <input type="text" name="tranAmount">

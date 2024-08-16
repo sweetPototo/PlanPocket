@@ -14,6 +14,6 @@ public enum TransactionCategory {
 	TRANSPORT(6, "교통비"),
 	ETC(7, "기타");
 	
-	private final int transactionCategoryCode;
-	private final String transactionCategoryName;
+	private final int tranCateCode;
+	private final String tranCateName;
 }

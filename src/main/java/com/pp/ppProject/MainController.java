@@ -3,6 +3,10 @@ package com.pp.ppProject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.pp.ppProject.domain.category.TransactionCategory;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +21,8 @@ public class MainController {
 	   }
 	
 	@GetMapping("/information")
-	   public String transaction() {
+	   public String transaction(HttpServletRequest req) {
+		req.setAttribute("tCate", TransactionCategory.values());
 	      return "information/information_input";
 	   }
 
