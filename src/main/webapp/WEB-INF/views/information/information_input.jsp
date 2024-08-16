@@ -13,32 +13,32 @@
 	href="${pageContext.request.contextPath}/information/information_input.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/calender.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/calender.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/transactionInput.js"></script>
+	
 
 
 </head>
 <%@ include file="information_top.jsp"%>
 <body>
-	<form name="input" method="post"
-		action="${pageContext.request.contextPath}/">
+	<form name="f" method="post" action="${pageContext.request.contextPath}/">
 		<div id="full">
 			<div id="screen_left">
 				<!-- 계좌 for문 돌릴 자리 -->
 				<div class="account">
-					<input type="radio" name="accountNo" value="">계좌 1
+					<input type="radio" name="accountNo" value="1">계좌 1
 				</div>
 				<div class="account">
-					<input type="radio" name="accountNo" value="">계좌 2
+					<input type="radio" name="accountNo" value="2">계좌 2
 				</div>
 				<div class="account">
-					<input type="radio" name="accountNo" value="">계좌 3
+					<input type="radio" name="accountNo" value="3">계좌 3
 				</div>
 				<div class="account">
-					<input type="radio" name="accountNo" value="">계좌 4
+					<input type="radio" name="accountNo" value="4">계좌 4
 				</div>
 				<div class="account">
-					<input type="radio" name="accountNo" value="">계좌 5
+					<input type="radio" name="accountNo" value="5">계좌 5
 				</div>
 			</div>
 			<div id="screen_right">
@@ -47,10 +47,9 @@
 						name="tranDate">
 				</div>
 				<div class="form-row">
-					<label>지출/입금</label> <input type="text" name="tranType">
-				</div>
-				<div class="form-row">
-					<label>결제 수단</label> <input type="text" name="paymentMethod">
+					<label>지출/입금</label> 
+						<input type="radio" name="tranType" value="0" checked>지출
+						<input type="radio" name="tranType" value="1">입금
 				</div>
 				<div class="form-row">
 					<label>소비 카테고리</label> <select name="tranCategory">
@@ -60,12 +59,17 @@
 					</select>
 				</div>
 				<div class="form-row">
-					<label>금액</label> <input type="text" name="tranAmount">
+					<label>금액</label> <input type="number" name="tranAmount">&nbsp;원
 				</div>
 				<div class="form-row">
 					<label>내용</label> <input type="text" name="tranDetail">
 				</div>
-
+				<div class="form-row">
+				<div class="button">
+					<button type="button" onclick="check()"> 입력 </button>
+					<button type="button" onclick="reseting()"> 초기화 </button>
+				</div>
+				</div>
 			</div>
 		</div>
 	</form>

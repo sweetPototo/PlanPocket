@@ -12,6 +12,7 @@
 	background-color: black;
 	float: left;
 	padding: 10px;
+	font-size: 28px;
 }
 
 #screen_right {
@@ -20,6 +21,7 @@
 	background-color: blue;
 	float: right;
 	padding: 10px;
+	font-size: 28px;
 }
 
 .account, .form-row {
@@ -29,9 +31,16 @@
 
 label {
 	display: inline-block;
-	width: 100px;
+	width: 25%;
+	text-align: center;
+	
 }
 
 input {
-	width: 200px;
+	width: 200xp;
+	font-size: 22px;
+}
+
+.button {
+	float: right;
 }
