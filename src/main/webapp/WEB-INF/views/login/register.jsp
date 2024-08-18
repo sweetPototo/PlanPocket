@@ -30,7 +30,8 @@
             <div class="phone-message" style="color: red; font-size: 12px;"></div> <!-- 전화번호 유효성 메시지 -->
             <div class="email-section">
                 <input type="email" name="email" placeholder="이메일" required>
-                <button type="button" id="send-code">인증번호 받기</button>
+                <!-- <span>이메일 인증번호</span> -->
+				<button class="btn btn-outline-primary" type="button" id="checkEmail">인증번호</button>
             </div>
             <div class="email-message" style="color: red; font-size: 12px;"></div> <!-- 이메일 메시지 -->
             <input type="text" name="verification_code" placeholder="인증번호 입력">
