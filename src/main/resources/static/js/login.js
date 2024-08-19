@@ -25,6 +25,10 @@ $(document).ready(function() {
     $('input[name="username"]').on('input', function() {
         var username = $(this).val();
         var regex = /^[a-zA-Z0-9]*$/;
+        if (username.length > 12) {
+            username = username.substring(0, 12); // 최대 12글자로 자르기
+            $(this).val(username); // 입력 필드에 반영
+        }
         if (!regex.test(username)) {
             $('.message').text('아이디는 영어와 숫자만 입력할 수 있습니다.').removeClass('success').addClass('error');
             validationState.username = false;
@@ -33,7 +37,7 @@ $(document).ready(function() {
             validationState.username = false;
         } else {
             $.ajax({
-                url: '/checkUsername',  // 서버의 컨트롤러 URL
+                url: '/register/checkUsername',  // 서버의 컨트롤러 URL
                 type: 'GET',
                 data: { username: username },
                 success: function(response) {
@@ -73,10 +77,11 @@ $(document).ready(function() {
     // 비밀번호 유효성 검사
     $('input[name="password"]').on('input', function() {
         var password = $(this).val();
-        var regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        // 영문자, 숫자, 특수문자 포함, 8자 이상
+        var regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         if (!regex.test(password)) {
-            $('.password-message').text('비밀번호는 영문자와 숫자를 포함하여 8자리 이상이어야 합니다.').removeClass('success').addClass('error');
+            $('.password-message').text('비밀번호는 영문자, 숫자, 특수문자를 포함하여 8자리 이상이어야 합니다.').removeClass('success').addClass('error');
             validationState.password = false;
         } else {
             $('.password-message').text('');
@@ -132,7 +137,7 @@ $(document).ready(function() {
             validationState.email = false;
         } else {
             $.ajax({
-                url: '/api/validateEmail',  // 서버의 컨트롤러 URL
+                url: '/register/validateEmail',  // 서버의 컨트롤러 URL
                 type: 'GET',
                 data: { email: email },
                 success: function(response) {
@@ -168,35 +173,29 @@ $(document).ready(function() {
         toggleSubmitButton();
     });
 
-    // 이메일 인증번호 전송
+    // 인증번호 발송 버튼 클릭 시 이메일 인증번호 발송
     $('#send-code').on('click', function() {
-        var email = $('input[name="email"]').val();
+        var email = $('input[name="email"]').val().trim();
 
         if (!validateEmail(email)) {
-            $('.email-message').text('유효한 이메일 주소를 입력해주세요.').removeClass('success').addClass('error');
-            validationState.email = false;
-            toggleSubmitButton();
+            alert('유효한 이메일 주소를 입력해주세요.');
             return;
         }
 
         $.ajax({
-            url: '/api/sendVerificationCode', // 서버의 컨트롤러 URL
+            url: '/sendVerificationCode', // 서버의 컨트롤러 URL
             type: 'POST',
             data: { email: email },
             success: function(response) {
                 if (response === 'SENT') {
-                    $('.email-message').text('인증번호가 전송되었습니다.').removeClass('error').addClass('success');
-                    validationState.verificationCode = true;
+                    alert('인증번호가 전송되었습니다.');
                 } else {
-                    $('.email-message').text('인증번호 전송에 실패했습니다.').removeClass('success').addClass('error');
-                    validationState.verificationCode = false;
+                    alert('인증번호 전송에 실패했습니다.');
                 }
-                toggleSubmitButton();
             },
             error: function() {
                 console.error("AJAX 요청이 실패했습니다.");
-                validationState.verificationCode = false;
-                toggleSubmitButton();
+                alert('서버 오류로 인증번호 전송에 실패했습니다.');
             }
         });
     });
@@ -205,10 +204,8 @@ $(document).ready(function() {
         var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
-    
-    $(document).ready(function() {
-    // 회원가입 버튼 클릭 시 데이터 전송 부분
 
+    // 회원가입 버튼 클릭 시 데이터 전송 부분
     $('form').on('submit', function(event) {
         event.preventDefault(); // 기본 제출 이벤트 막기
 
@@ -228,7 +225,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: '/api/register', // 서버의 회원가입 처리 컨트롤러 URL
+            url: '/register', // 서버의 회원가입 처리 컨트롤러 URL
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(formData),
@@ -246,6 +243,4 @@ $(document).ready(function() {
             }
         });
     });
-});
-
 });
