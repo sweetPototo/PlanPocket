@@ -1,5 +1,7 @@
 package com.pp.ppProject.domain;
 
+import com.pp.ppProject.dto.request.AccountRequestDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder  //Builder 사용
 @AllArgsConstructor //필드의 모든 값을 매개변수로 받는 생성자 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 생성, 같은 패키지나 상송받은 클래스만 생성자 접근
-public class AcountEntity {
+public class AccountEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCOUNT_SEQ_GENERATOR")
@@ -30,4 +32,14 @@ public class AcountEntity {
 	private String accountName;
 	private int accountCategory;
 	private int memberNo;
+	private String accountDetail;
+	
+	public static AccountEntity toEntity(AccountRequestDTO dto) {
+		return AccountEntity.builder()
+				.accountName(dto.getAccountName())
+				.accountCategory(Integer.parseInt(dto.getAccountCategory()))
+				.accountDetail(dto.getAccountDetail())
+				.memberNo(Integer.parseInt(dto.getMemberNo()))
+				.build();
+	}
 }

@@ -12,18 +12,6 @@ function check() {
       f.tranAmount.focus();
       return;
    }
-   
-   var values = document.getElementsByName("tranCategory");  //배열
-   for(var i=0;i<values.length;i++){
-      if(values[i].checked){
-          isChk = true;
-           break;
-       }
-   } 
-   if(!isChk){
-       alert("카테고리를 선택해주세요.");
-       return;
-   }
     
    if(f.tranDetail.value==""){
       document.f.tranDetail.value = " ";
@@ -40,4 +28,8 @@ function reseting() {
 	f.accountNo.value = f.accountNo.value;
 	return;
 	
+}
+
+function addAccount() {
+	window.location.href = "/information/account";
 }

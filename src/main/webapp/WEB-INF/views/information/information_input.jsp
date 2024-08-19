@@ -10,15 +10,13 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/information/information_input.css" />
+	href="${pageContext.request.contextPath}/information/information.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/calender.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/transactionInput.js"></script>
-	
-
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/informationInput.js"></script>
 </head>
+
 <%@ include file="information_top.jsp"%>
 <body>
 	<form name="f" method="post" action="${pageContext.request.contextPath}/">
@@ -40,6 +38,9 @@
 				<div class="account">
 					<input type="radio" name="accountNo" value="5">계좌 5
 				</div>
+				<div class="form-row">
+					<button type="button" class="button" onclick="addAccount()"> 추가 </button>
+				</div>
 			</div>
 			<div id="screen_right">
 				<div class="form-row">
@@ -52,7 +53,8 @@
 						<input type="radio" name="tranType" value="1">입금
 				</div>
 				<div class="form-row">
-					<label>소비 카테고리</label> <select name="tranCategory">
+					<label>소비 카테고리</label>
+					<select name="tranCategory">
 						<c:forEach var="cate" items="${tCate}">
 							<option value="${cate.tranCateCode}">${cate.tranCateName}
 						</c:forEach>
