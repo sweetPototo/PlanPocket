@@ -25,6 +25,7 @@ $(document).ready(function() {
     $('input[name="username"]').on('input', function() {
         var username = $(this).val();
         var regex = /^[a-zA-Z0-9]*$/;
+
         if (username.length > 12) {
             username = username.substring(0, 12); // 최대 12글자로 자르기
             $(this).val(username); // 입력 필드에 반영
@@ -37,7 +38,7 @@ $(document).ready(function() {
             validationState.username = false;
         } else {
             $.ajax({
-                url: '/register/checkUsername',  // 서버의 컨트롤러 URL
+                url: '/register/checkUsername',
                 type: 'GET',
                 data: { username: username },
                 success: function(response) {
@@ -57,14 +58,18 @@ $(document).ready(function() {
                 }
             });
         }
+        toggleSubmitButton();
     });
 
     // 이름 유효성 검사 (한글만 허용)
     $('input[name="name"]').on('input', function() {
         var name = $(this).val().trim();
-        var regex = /^[가-힣]+$/;
+        var regex = /^[가-힣]*$/;
 
-        if (!regex.test(name)) {
+        if (name === "") {
+            $('.name-message').text('').removeClass('success error');
+            validationState.name = false;
+        } else if (!regex.test(name)) {
             $('.name-message').text('이름은 한글만 입력할 수 있습니다.').removeClass('success').addClass('error');
             validationState.name = false;
         } else {
@@ -80,7 +85,10 @@ $(document).ready(function() {
         // 영문자, 숫자, 특수문자 포함, 8자 이상
         var regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-        if (!regex.test(password)) {
+        if (password === "") {
+            $('.password-message').text('').removeClass('success error');
+            validationState.password = false;
+        } else if (!regex.test(password)) {
             $('.password-message').text('비밀번호는 영문자, 숫자, 특수문자를 포함하여 8자리 이상이어야 합니다.').removeClass('success').addClass('error');
             validationState.password = false;
         } else {
@@ -113,18 +121,24 @@ $(document).ready(function() {
         }
     }
 
-    // 전화번호 유효성 검사 (숫자만 허용)
+    // 전화번호 유효성 검사 (숫자만 허용, 11자리 이하)
     $('input[name="phone"]').on('input', function() {
-        var phone = $(this).val();
-        var regex = /^[0-9]*$/;
+        var phone = $(this).val().replace(/\D/g, ''); // 숫자가 아닌 문자는 제거
 
-        if (!regex.test(phone)) {
-            $('.phone-message').text('전화번호는 숫자만 입력할 수 있습니다.').removeClass('success').addClass('error');
+        if (phone.length > 11) {
+            phone = phone.substring(0, 11); // 11자리로 제한
+        }
+
+        $(this).val(phone);
+
+        if (phone === "") {
+            $('.phone-message').text('');
             validationState.phone = false;
         } else {
-            $('.phone-message').text('');
+            $('.phone-message').text(''); // 오류 메시지를 비웁니다
             validationState.phone = true;
         }
+
         toggleSubmitButton();
     });
 
@@ -137,7 +151,7 @@ $(document).ready(function() {
             validationState.email = false;
         } else {
             $.ajax({
-                url: '/register/validateEmail',  // 서버의 컨트롤러 URL
+                url: '/register/validateEmail',
                 type: 'GET',
                 data: { email: email },
                 success: function(response) {
@@ -173,41 +187,36 @@ $(document).ready(function() {
         toggleSubmitButton();
     });
 
-    // 인증번호 발송 버튼 클릭 시 이메일 인증번호 발송
+    // 인증번호 전송 버튼 클릭 이벤트
     $('#send-code').on('click', function() {
         var email = $('input[name="email"]').val().trim();
 
-        if (!validateEmail(email)) {
-            alert('유효한 이메일 주소를 입력해주세요.');
+        if (email === "") {
+            $('.email-message').text('이메일 주소를 입력해주세요.').removeClass('success').addClass('error');
             return;
         }
 
         $.ajax({
-            url: '/sendVerificationCode', // 서버의 컨트롤러 URL
+            url: '/sendVerificationCode',
             type: 'POST',
             data: { email: email },
             success: function(response) {
                 if (response === 'SENT') {
-                    alert('인증번호가 전송되었습니다.');
+                    alert('인증번호가 이메일로 전송되었습니다.');
                 } else {
-                    alert('인증번호 전송에 실패했습니다.');
+                    alert('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
                 }
             },
             error: function() {
-                console.error("AJAX 요청이 실패했습니다.");
-                alert('서버 오류로 인증번호 전송에 실패했습니다.');
+                console.error("인증번호 전송 요청이 실패했습니다.");
+                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
             }
         });
     });
 
-    function validateEmail(email) {
-        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    }
-
-    // 회원가입 버튼 클릭 시 데이터 전송 부분
+      // 폼 제출 이벤트
     $('form').on('submit', function(event) {
-        event.preventDefault(); // 기본 제출 이벤트 막기
+        event.preventDefault(); // 기본 제출 이벤트를 막습니다
 
         if ($('input[type="submit"]').prop('disabled')) {
             return; // 버튼이 비활성화된 상태라면 종료
@@ -215,31 +224,28 @@ $(document).ready(function() {
 
         var formData = {
             memberId: $('input[name="username"]').val(),
-            memberPasswd: $('input[name="password"]').val(),
-            memberName: $('input[name="name"]').val(),
-            memberTel: $('input[name="phone"]').val(),
-            memberEmail: $('input[name="email"]').val(),
-            memberJoinDate: new Date().toISOString().split('T')[0], // 현재 날짜를 기본 값으로 설정
-            memberImage: '',  // 이미지 업로드 기능이 없는 경우 기본 값으로 빈 문자열 사용
-            memberIntro: ''  // 소개문 입력이 없는 경우 빈 문자열 사용
+    		memberPasswd: $('input[name="password"]').val(),
+    		memberName: $('input[name="name"]').val(),
+   		 	memberTel: $('input[name="phone"]').val(),
+   		 	memberEmail: $('input[name="email"]').val(),
+    		verificationCode: $('input[name="verification_code"]').val()
         };
 
         $.ajax({
-            url: '/register', // 서버의 회원가입 처리 컨트롤러 URL
+            url: '/register/submit', // 서버의 회원가입 처리 컨트롤러 URL
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(formData),
             success: function(response) {
-                if (response === 'SUCCESS') {
+                if (response.message === '회원가입 성공') {
                     alert('회원가입이 성공적으로 완료되었습니다.');
-                    window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+                    window.location.href = '/main'; // 로그인 페이지로 리다이렉트
                 } else {
-                    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+                    alert(response.message);
                 }
             },
             error: function() {
-                console.error("회원가입 요청이 실패했습니다.");
-                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
             }
         });
     });

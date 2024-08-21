@@ -3,14 +3,19 @@ package com.pp.ppProject.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pp.ppProject.domain.MemberEntity;
+import com.pp.ppProject.repository.MemberRepository;
 import com.pp.ppProject.service.LoginService;
 import com.pp.ppProject.service.RegisterMail;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +28,13 @@ public class LoginController {
 
     private final LoginService loginService;
     private final RegisterMail registerMail;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public LoginController(LoginService loginService, RegisterMail registerMail) {
+    public LoginController(LoginService loginService, RegisterMail registerMail, MemberRepository memberRepository) {
         this.loginService = loginService;
         this.registerMail = registerMail;
+        this.memberRepository = memberRepository;
     }
 
     // 회원가입 폼을 보여주는 메서드
@@ -38,22 +45,27 @@ public class LoginController {
     }
 
     // 회원가입 요청을 처리하는 메서드
-    @PostMapping("/submit")
-    public String registerUser(@ModelAttribute MemberEntity memberEntity, Model model) {
+    @PostMapping("/register/submit")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody MemberEntity memberEntity) {
+        Map<String, String> response = new HashMap<>();
         try {
             boolean isRegistered = loginService.registerUser(memberEntity);
             if (isRegistered) {
-                model.addAttribute("message", "회원가입 성공");
-                return "redirect:/user/success"; // 회원가입 성공 페이지로 리디렉션
+                response.put("message", "회원가입 성공");
+                return ResponseEntity.ok(response);
             } else {
-                model.addAttribute("message", "회원가입 실패");
-                return "login/register"; // 실패 시 다시 등록 페이지로 이동
+                response.put("message", "회원가입 실패");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
         } catch (Exception e) {
-            model.addAttribute("message", "오류 발생");
-            return "login/register"; // 오류 발생 시 다시 등록 페이지로 이동
+            response.put("message", "오류 발생");
+            e.printStackTrace();  // 스택 트레이스를 로그에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
 
     // 이메일 인증 코드 발송
     @PostMapping("/sendVerificationCode")
@@ -82,7 +94,7 @@ public class LoginController {
             return "INVALID";  // 아이디가 영어와 숫자만으로 구성되지 않은 경우
         }
 
-        boolean exists = checkUsernameInDatabase(username); 
+        boolean exists = memberRepository.existsByMemberId(username);
         if (exists) {
             return "EXIST";  // 이미 아이디가 존재하는 경우
         } else {
@@ -90,10 +102,7 @@ public class LoginController {
         }
     }
 
-    private boolean checkUsernameInDatabase(String username) {
-        // 실제 DB 조회 로직으로 변경 필요
-        return "existingUser".equals(username);
-    }
+    
 
     // 이메일 유효성 검사
     @GetMapping("/register/validateEmail")
