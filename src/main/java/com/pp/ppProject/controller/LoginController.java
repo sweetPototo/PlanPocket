@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.pp.ppProject.domain.MemberEntity;
 import com.pp.ppProject.repository.MemberRepository;
@@ -48,8 +47,8 @@ public class LoginController {
     @PostMapping("/register/submit")
     @ResponseBody
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody MemberEntity memberEntity) {
-        Map<String, String> response = new HashMap<>();
-        try {
+        Map<String, String> response = new HashMap<>();        
+        try {       
             boolean isRegistered = loginService.registerUser(memberEntity);
             if (isRegistered) {
                 response.put("message", "회원가입 성공");
@@ -113,5 +112,19 @@ public class LoginController {
         } else {
             return ResponseEntity.ok("INVALID");
         }
+    }
+    
+    @PostMapping("/verifyCode")
+    @ResponseBody
+    public ResponseEntity<Map<String, Boolean>> verifyCode(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String verificationCode = request.get("verificationCode");
+
+        boolean isValid = loginService.verifyCode(email, verificationCode);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("valid", isValid);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -4,7 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<style>
+        /* 타이머 스타일 */
+        #timer {
+            font-weight: bold;
+            margin-left: 10px;
+            color: green; /* 타이머 색상 */
+        }
+    </style>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +37,8 @@
             <div class="phone-message" style="color: red; font-size: 12px;"></div> <!-- 전화번호 유효성 메시지 -->
             <div class="email-section">
                 <input type="email" name="email" placeholder="이메일" required>
-                <button class="btn btn-outline-primary" type="button" id="send-code">인증번호</button>
+                <button class="btn btn-outline-primary" type="button" id="send-code">인증번호 전송</button>
+                <span id="timer">00:00</span>
             </div>
             <div class="email-message" style="color: red; font-size: 12px;"></div> <!-- 이메일 메시지 -->
             <input type="text" name="verification_code" placeholder="인증번호 입력" required>

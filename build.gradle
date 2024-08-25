@@ -57,12 +57,10 @@ dependencies {
 
 	// Jakarta Mail
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
-    
-    // javax.mail
-    //implementation 'javax.mail:javax.mail-api:1.6.2'
-    //implementation 'com.sun.mail:javax.mail:1.6.2'
 
     // javax.servlet API
     implementation 'javax.servlet:javax.servlet-api:3.1.0'
+    
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
