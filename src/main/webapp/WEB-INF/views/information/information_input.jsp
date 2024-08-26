@@ -23,21 +23,11 @@
 		<div id="full">
 			<div id="screen_left">
 				<!-- 계좌 for문 돌릴 자리 -->
-				<div class="account">
-					<input type="radio" name="accountNo" value="1">계좌 1
-				</div>
-				<div class="account">
-					<input type="radio" name="accountNo" value="2">계좌 2
-				</div>
-				<div class="account">
-					<input type="radio" name="accountNo" value="3">계좌 3
-				</div>
-				<div class="account">
-					<input type="radio" name="accountNo" value="4">계좌 4
-				</div>
-				<div class="account">
-					<input type="radio" name="accountNo" value="5">계좌 5
-				</div>
+				<c:forEach var="a" items="${account}">
+					<div class="account">
+						<input type="radio" name="accountNo" value="${a.accountNo}">${a.accountName}
+					</div>
+				</c:forEach>
 				<div class="form-row">
 					<button type="button" class="button" onclick="addAccount()"> 추가 </button>
 				</div>

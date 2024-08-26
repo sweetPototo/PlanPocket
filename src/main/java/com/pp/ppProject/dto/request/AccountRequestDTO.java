@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
-//@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountRequestDTO {
 

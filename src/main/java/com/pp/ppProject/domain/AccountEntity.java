@@ -2,10 +2,14 @@ package com.pp.ppProject.domain;
 
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -31,15 +35,30 @@ public class AccountEntity {
 	private int accountNo;
 	private String accountName;
 	private int accountCategory;
-	private int memberNo;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "memberNo")
+	private MemberEntity member;
 	private String accountDetail;
 	
-	public static AccountEntity toEntity(AccountRequestDTO dto) {
+//	public static AccountEntity createAccountEntity(AccountRequestDTO dto) {
+//		return AccountEntity.builder()
+//				.accountName(dto.getAccountName())
+//				.accountCategory(Integer.parseInt(dto.getAccountCategory()))
+//				.accountDetail(dto.getAccountDetail())
+//				.memberNo(Integer.parseInt(dto.getMemberNo()))
+//				.build();
+//	}
+	
+	public static AccountEntity createAccountEntity(AccountRequestDTO dto) {
+		MemberEntity m = MemberEntity.builder()
+				.memberNo(Integer.parseInt(dto.getMemberNo()))
+				.build();
 		return AccountEntity.builder()
 				.accountName(dto.getAccountName())
 				.accountCategory(Integer.parseInt(dto.getAccountCategory()))
 				.accountDetail(dto.getAccountDetail())
-				.memberNo(Integer.parseInt(dto.getMemberNo()))
+				.member(m)
 				.build();
 	}
 }

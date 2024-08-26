@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "member")
 @SequenceGenerator(
     name = "MEMBER_SEQ_GENERATOR", 
@@ -56,4 +56,5 @@ public class MemberEntity {
    
    @DateTimeFormat(pattern = "yy/MM/dd")
    private Date memberOutDate;
+   
 }
