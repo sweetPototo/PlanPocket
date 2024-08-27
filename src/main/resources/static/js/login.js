@@ -283,7 +283,10 @@ $(document).ready(function() {
             memberEmail: $('input[name="email"]').val(),
             verificationCode: $('input[name="verification_code"]').val()
         };
-
+	
+		// undefined 에러를 방지하기 위해 formData 출력
+   		console.log('Form Data:', formData);
+		
         $.ajax({
             url: '/register/submit', // 서버의 회원가입 처리 컨트롤러 URL
             type: 'POST',
