@@ -41,6 +41,9 @@ public class AccountEntity {
 	private MemberEntity member;
 	private String accountDetail;
 	
+	@Column(nullable = true)
+	private int accountBalance;
+	
 //	public static AccountEntity createAccountEntity(AccountRequestDTO dto) {
 //		return AccountEntity.builder()
 //				.accountName(dto.getAccountName())
@@ -59,6 +62,7 @@ public class AccountEntity {
 				.accountCategory(Integer.parseInt(dto.getAccountCategory()))
 				.accountDetail(dto.getAccountDetail())
 				.member(m)
+				.accountBalance(Integer.parseInt(dto.getAccountBalance()))
 				.build();
 	}
 }

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder  //Builder 사용
 @AllArgsConstructor //필드의 모든 값을 매개변수로 받는 생성자 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 생성, 같은 패키지나 상송받은 클래스만 생성자 접근
-public class TransactionBKEntity {
+public class DepoWithdEntityBK {
 
 	@Id
 	private int tranNoBk;

@@ -1,7 +1,6 @@
 function check() { 
    if(f.accountNo.value==""){
           alert('결제수단을 선택해주세요.');
-          f.accountNo.focus();
            return;
    }
    var amount = f.tranAmount.value;

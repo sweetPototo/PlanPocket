@@ -16,17 +16,21 @@ import com.pp.ppProject.domain.category.AccountCategory;
 import com.pp.ppProject.domain.category.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
+import com.pp.ppProject.dto.request.InputTransactionRequestDTO;
+import com.pp.ppProject.dto.request.DepoWithdDTO;
 import com.pp.ppProject.service.InformationService;
+import com.pp.ppProject.service.InformationServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/information")
+@Slf4j
 public class InformationController {
 	
-	private final Logger logger = LoggerFactory.getLogger(InformationController.class.getName());
 	public final InformationService infoService;
 	
 	private void setMessage(String msg, String url, HttpServletRequest req) {
@@ -35,7 +39,7 @@ public class InformationController {
 	}
 	
 	@GetMapping("/{memberNo}")
-	   public String transaction(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
+	   public String input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
 		List<AccountDTO> account = new ArrayList<>();
 		account = infoService.selectMemberNo(memberNo);
 		req.setAttribute("account", account);
@@ -43,9 +47,25 @@ public class InformationController {
 		return "information/information_input";
 	   }
 	
+	@PostMapping("/{memberNo}/input")
+	public String inputTransaction(HttpServletRequest req, @PathVariable("memberNo") int memberNo, @ModelAttribute InputTransactionRequestDTO inputDto) {
+		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto, memberNo);
+		String msg, url = "";
+		boolean isAdd = infoService.addTran(dto);
+		if(isAdd){
+			msg = "가계부가 입력되었습니다.";
+			url = "/information/" + dto.getMemberNo();
+		}else {
+			msg = "가계부가 입력되지 않았습니다. 다시 시도해주세요.";
+			url = "";
+		}
+		setMessage(msg, url, req);
+		return "message";
+	}
+	
 	@GetMapping("/account")
 	public String accountGet(HttpServletRequest req) {
-		logger.info("start account method");
+		log.info("start account method");
 		req.setAttribute("aCate", AccountCategory.values());
 		return "information/information_account";
 	}
@@ -56,7 +76,7 @@ public class InformationController {
 		String msg, url = "";
 		if(isAdd){
 			msg = "계좌 등록이 완료되었습니다.";
-			url = "/information";
+			url = "/information/" + dto.getMemberNo();
 		}else {
 			msg = "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.";
 			url = "";
@@ -64,4 +84,6 @@ public class InformationController {
 		setMessage(msg, url, req);
 		return "message";
 	}
+	
+	
 }

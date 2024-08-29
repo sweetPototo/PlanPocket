@@ -16,13 +16,15 @@ public class AccountRequestDTO {
 	private String accountCategory;
 	private String accountDetail;
 	private String memberNo;
+	private String accountBalance;
 	
 	 @ConstructorProperties({"accountName", "accountCategory", "accountDetail", "memberNo"})
-	    public AccountRequestDTO(String accountName, String accountCategory, String accountDetail, String memberNo) {
+	    public AccountRequestDTO(String accountName, String accountCategory, String accountDetail, String memberNo, String accountBalance) {
 	        this.accountName = accountName;
 	        this.accountCategory = accountCategory;
 	        this.accountDetail = accountDetail;
 	        this.memberNo = memberNo;
+	        this.accountBalance = accountBalance;
 	    }
 	
 }

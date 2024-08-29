@@ -28,6 +28,10 @@
 					</select>
 					</div>
 				<div class = "form-row">
+					<label>계좌 잔액</label>
+					<input type="number" name="accountBalance">
+				</div>
+				<div class = "form-row">
 					<label>계좌 설명</label>
 					<input type="text" name="accountDetail">
 				</div>

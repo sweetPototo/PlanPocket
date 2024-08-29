@@ -11,7 +11,7 @@ import com.pp.ppProject.domain.AccountEntity;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer>{
 	
-	@Query(value = "select * from account where memberNo = :memberNo", nativeQuery = true)
-	public List<AccountEntity> searchAccount(@Param("memberNo")int memberNo);
-
+	//로그인 계정에 해당하는 계좌 찾기
+	public List<AccountEntity> findByMemberMemberNo(int memberNo);
+	
 }

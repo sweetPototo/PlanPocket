@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountDTO {
+public class InputTransactionRequestDTO {
 
-	private int accountNo;
-	private String accountName;
-	private int accountBalance;
+	private String accountNo;
+	private String tranDate;
+	private String tranType;
+	private String tranCategoryCode;
+	private String tranAmount;
+	private String tranDetail;
 }
