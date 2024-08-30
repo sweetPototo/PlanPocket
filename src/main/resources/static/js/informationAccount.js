@@ -16,7 +16,7 @@ function check() {
    if(f.accountDetail.value==""){
       document.f.accountDetail.value = " ";
    }
-    document.f.submit();
+    submit();
    }
    
 function reseting() {
@@ -25,4 +25,17 @@ function reseting() {
 	f.accountDetail.value = null;
 	return;
 	
+}
+
+function submit() {
+	//객체로 값 저장
+	const accountRequest = {
+		accountName : document.getElementById('accountName').value, //계좌 이름
+		accountCategory : document.getElementById('accountCategory').value, //계좌 카테고리
+		accountDetail : document.getElementById('accountDetail').value, //계좌 설명
+		memberNo : '${sessionScope.memberNo}', //회원번호
+		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
+	}
+	
+	fetchMethod(accountRequest);
 }

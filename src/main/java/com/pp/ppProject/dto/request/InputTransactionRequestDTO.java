@@ -1,13 +1,13 @@
 package com.pp.ppProject.dto.request;
 
+import java.beans.ConstructorProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class InputTransactionRequestDTO {
 
@@ -17,4 +17,14 @@ public class InputTransactionRequestDTO {
 	private String tranCategoryCode;
 	private String tranAmount;
 	private String tranDetail;
+	
+//	@ConstructorProperties({"accountNo", "tranDate", "tranType", "tranCategoryCode", "tranAmount", "tranDetail"})
+//	public InputTransactionRequestDTO(String accountNo, String tranDate, String tranType, String tranCategoryCode, String tranAmount, String tranDetail) {
+//		this.accountNo = accountNo;
+//		this.tranDate = tranDate;
+//		this.tranType = tranType;
+//		this.tranCategoryCode = tranCategoryCode;
+//		this.tranAmount = tranAmount;
+//		this.tranDetail = tranDetail;
+//	}
 }

@@ -20,10 +20,9 @@
 	<form name="f" method="post" action="${pageContext.request.contextPath}/information/${memberNo}/input">
 		<div id="full">
 			<div id="screen_left">
-				<!-- 계좌 for문 돌릴 자리 -->
 				<c:forEach var="a" items="${account}">
 					<div class="account">
-						<input type="radio" name="accountNo" value="${a.accountNo}">${a.accountName}&nbsp;&nbsp;&nbsp;${a.accountBalance}&nbsp;
+						<input type="radio" name="accountNo" value="${a.accountNo}">${a.accountName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${a.accountBalance}&nbsp;원&nbsp;&nbsp;
 					</div>
 				</c:forEach>
 				<div class="form-row">

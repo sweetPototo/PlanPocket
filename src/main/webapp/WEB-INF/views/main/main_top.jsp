@@ -9,7 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="${pageContext.request.contextPath}/information/${memberNo}"> 거래 입력하기 </a>
+	<!-- <a href="${pageContext.request.contextPath}/information/${memberNo}">  -->
+	<a href="javascript:submit"> 거래 입력하기 </a>
 	<br>${pageContext.request.contextPath}
 </body>
 </html>

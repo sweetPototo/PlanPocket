@@ -8,11 +8,12 @@
 <title>[PP] 거래계좌 추가</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/information/information.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/informationAccount.js"></script>
+<script type="text/javascript" src="/js/informationAccount.js"></script>
+<script type="text/javascript" src="/js/fetchApi.js"></script>
 </head>
 <%@ include file="information_top.jsp"%>
 <body>
-	<form name="f" method="post" action="${pageContext.request.contextPath}/information/account">
+	<!-- <form name="f" method="post" action="${pageContext.request.contextPath}/information/account"> -->
 		<div id = "full">
 			<div id="screen_center">
 				<div class = "form-row">
@@ -35,13 +36,13 @@
 					<label>계좌 설명</label>
 					<input type="text" name="accountDetail">
 				</div>
-					<input type="hidden" name="memberNo" value="${sessionScope.memberNo}">
+					<!--  <input type="hidden" name="memberNo" value="${sessionScope.memberNo}">-->
 				<div class="form-row">
 					<button type="button" class="button" onclick="check()"> 입력 </button>
 					<button type="button" class="button" onclick="reseting()"> 초기화 </button>
 				</div>
 			</div>
 		</div>
-	</form>
+	<!--  </form>-->
 </body>
 </html>
