@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="/js/fetchApi.js"></script>
 </head>
 <body>
 	<!-- <a href="${pageContext.request.contextPath}/information/${memberNo}">  -->
