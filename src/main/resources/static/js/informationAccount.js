@@ -36,6 +36,8 @@ function submit() {
 		memberNo : '${sessionScope.memberNo}', //회원번호
 		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
 	}
+	const url = '/information/${sessionScope.memberNo}/account';
+	const method = 'POST';
 	
-	fetchMethod(accountRequest);
+	fetchMethod(accountRequest, url, method);
 }

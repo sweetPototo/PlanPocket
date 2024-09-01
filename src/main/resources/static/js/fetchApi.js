@@ -1,11 +1,11 @@
-function fetchMethod(req){
+function fetchMethod(req, url, method){
 	//fetch api를 이용하여 전송
-	fetch('/information/${sessionScope.memberNo}/account', { //요청보낼 서버 URL
-		method: 'POST',  //HTTP 메서드로 post 사용
+	fetch(url, { //요청보낼 서버 URL
+		method: method,  //HTTP 메서드로 post 사용
 		headers: {
 			'Content-Type' : 'application/json' //헤더를 설정하여 보낼 데이터가 json임을 알림
 		},
-		body: JSON.stringify(req) //객체를 json 문자열로 변환하여 전송
+		body: JSON.stringify(req) //객체를 json 문자열로 변환하여 전송  ----> 이부분 get방식때 어떻게 할건지 수정해야 
 	})
 	.then(response => {  //서버에서의 응답 처리하는 코드
 		if (!response.ok) {  //응답상태코드가 성공이 아닐 경우(!200~299)이 아닐 경우
