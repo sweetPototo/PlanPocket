@@ -15,9 +15,7 @@ $(document).ready(function() {
 
     // 유효성 상태에 따라 제출 버튼 활성화/비활성화 함수
     function toggleSubmitButton() {
-        var allValid = Object.values(validationState).every(function(value) {
-            return value === true;
-        });
+        var allValid = Object.values(validationState).every(value => value === true);
         console.log('Validation State:', validationState); // 상태 출력
         console.log('Submit Button Enabled:', allValid); // 버튼 활성화 상태 출력
         $('input[type="submit"]').prop('disabled', !allValid);
@@ -41,7 +39,7 @@ $(document).ready(function() {
             validationState.username = false;
         } else {
             $.ajax({
-                url: '/register/checkUsername',
+                url: '/api/checkUsername',
                 type: 'GET',
                 data: { username: username },
                 success: function(response) {
@@ -146,22 +144,26 @@ $(document).ready(function() {
     // 이메일 유효성 검사 및 AJAX 체크
     $('input[name="email"]').on('input', function() {
         var email = $(this).val().trim();
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (email === "") {
-            $('.email-message').text('');
+            $('.email-message').text('').removeClass('success error');
+            validationState.email = false;
+        } else if (!regex.test(email)) {
+            $('.email-message').text('유효한 이메일 주소를 입력해 주세요.').removeClass('success').addClass('error');
             validationState.email = false;
         } else {
             $.ajax({
-                url: '/register/validateEmail',
+                url: '/api/validateEmail',
                 type: 'GET',
                 data: { email: email },
                 success: function(response) {
-                    if (response === 'INVALID') {
-                        $('.email-message').text('유효한 이메일 주소를 입력해주세요.').removeClass('success').addClass('error');
-                        validationState.email = false;
-                    } else if (response === 'VALID') {
-                        $('.email-message').text('');
+                    if (response === 'VALID') {
+                        $('.email-message').text('').removeClass('error').addClass('success');
                         validationState.email = true;
+                    } else {
+                        $('.email-message').text('유효하지 않은 이메일 주소입니다.').removeClass('success').addClass('error');
+                        validationState.email = false;
                     }
                     toggleSubmitButton();
                 },
@@ -174,141 +176,139 @@ $(document).ready(function() {
         }
     });
 
-    var timerInterval; // 타이머 인터벌 변수
-    var timeLeft = 300; // 타이머 시간 (5분 = 300초)
-
-    function startTimer() {
-        var minutes, seconds;
-        timerInterval = setInterval(function() {
-            minutes = Math.floor(timeLeft / 60);
-            seconds = timeLeft % 60;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            $('#timer').text(minutes + ':' + seconds);
-
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                $('#timer').text('00:00');
-                $('#send-code').prop('disabled', false); // 버튼을 다시 활성화
-            }
-            timeLeft--;
-        }, 1000);
-    }
-
-    // 인증번호 전송 버튼 클릭 이벤트
-    $('#send-code').on('click', function() {
-        var email = $('input[name="email"]').val().trim();
-
-        if (email === "") {
-            $('.email-message').text('이메일 주소를 입력해주세요.').removeClass('success').addClass('error');
-            return;
-        }
-
+    $('#send-code').click(function() {
+    var email = $('input[name="email"]').val().trim();
+    if (validationState.email) {
         $.ajax({
-            url: '/sendVerificationCode',
+            url: '/api/sendVerificationCode',
             type: 'POST',
             data: { email: email },
             success: function(response) {
                 if (response === 'SENT') {
-                    alert('인증번호가 이메일로 전송되었습니다.');
-                    $('#send-code').prop('disabled', true); // 인증번호 전송 버튼 비활성화
-                    $('#timer').text('05:00'); // 타이머를 5분으로 설정
-                    timeLeft = 300; // 타이머 시간을 300초로 설정
-                    startTimer(); // 타이머 시작
+                    startTimer();
+                    $('.email-message').text('인증번호가 전송되었습니다.').removeClass('error').addClass('success');
                 } else {
-                    alert('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+                    $('.email-message').text('인증번호 전송에 실패했습니다.').removeClass('success').addClass('error');
                 }
             },
             error: function() {
-                console.error("인증번호 전송 요청이 실패했습니다.");
-                alert('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+                console.error("AJAX 요청이 실패했습니다.");
+                $('.email-message').text('인증번호 전송에 실패했습니다.').removeClass('success').addClass('error');
             }
         });
-    });
+    } else {
+        $('.email-message').text('이메일 주소가 유효하지 않습니다.').removeClass('success').addClass('error');
+    }
+});
 
-    // 인증번호 입력 필드에 입력이 발생할 때마다 실행
-    $('input[name="verification_code"]').on('input', function() {
-        var email = $('input[name="email"]').val().trim();
-        var verificationCode = $(this).val().trim();
+// 인증번호 유효성 검사
+$('input[name="verification_code"]').on('input', function() {
+    var verificationCode = $(this).val().trim();
 
-        // 이메일이나 인증번호가 비어 있으면 메시지를 초기화하고 종료
-        if (email === "" || verificationCode === "") {
-            $('.verification-message').text('').removeClass('success error');
-            return;
-        }
-
-        // AJAX 요청을 통해 인증번호 검증
+    if (verificationCode === "") {
+        $('.verification-message').text('');
+        validationState.verificationCode = false;
+    } else {
         $.ajax({
-            url: '/verifyCode',  // 서버의 인증번호 확인 URL
-            method: 'POST',
+            url: '/api/verifyCode',
+            type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                email: email,
+                email: $('input[name="email"]').val().trim(),
                 verificationCode: verificationCode
             }),
             success: function(response) {
                 if (response.valid) {
-                    // 인증번호가 일치하는 경우 초록색 메시지 표시
-                    $('.verification-message').text('인증번호가 일치합니다').css('color', 'green').removeClass('error').addClass('success');
+                    $('.verification-message').text('인증번호가 확인되었습니다.').removeClass('error').addClass('success');
                     validationState.verificationCode = true;
                 } else {
-                    // 인증번호가 일치하지 않는 경우 빨간색 메시지 표시
-                    $('.verification-message').text('인증번호가 일치하지 않습니다').css('color', 'red').removeClass('success').addClass('error');
+                    $('.verification-message').text('인증번호가 올바르지 않습니다.').removeClass('success').addClass('error');
                     validationState.verificationCode = false;
                 }
                 toggleSubmitButton();
             },
             error: function() {
-                // 서버 오류 발생 시 오류 메시지 표시
-                $('.verification-message').text('서버 오류가 발생했습니다. 다시 시도해주세요.').css('color', 'red').removeClass('success').addClass('error');
-                validationState.verificationCode = false;
-                toggleSubmitButton();
+                console.error("AJAX 요청이 실패했습니다.");
+                $('.verification-message').text('인증번호 확인에 실패했습니다.').removeClass('success').addClass('error');
             }
-        });
+            });
+        }
     });
+
+
+    let timerInterval; // 타이머 인터벌 변수
+let isTimerRunning = false; // 타이머가 현재 실행 중인지 여부
+
+// 타이머 함수
+function startTimer() {
+    const timer = $('#timer');
+    let duration = 5 * 60; // 5분
+    let minutes, seconds;
+
+    // 타이머 업데이트 함수
+    function updateTimer() {
+        minutes = Math.floor(duration / 60);
+        seconds = duration % 60;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        timer.text(minutes + ":" + seconds);
+
+        if (duration <= 0) {
+            clearInterval(timerInterval);
+            timer.text('00:00');
+            $('#send-code').prop('disabled', false); // 버튼 활성화
+            $('.email-message').text('인증번호 유효 시간이 만료되었습니다.').removeClass('success').addClass('error');
+            isTimerRunning = false;
+        } else {
+            duration--;
+        }
+    }
+
+    if (isTimerRunning) {
+        clearInterval(timerInterval); // 기존 타이머 중지
+    }
+
+    timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+    $('#send-code').prop('disabled', true); // 버튼 비활성화
+    isTimerRunning = true;
+}
 
     // 폼 제출 이벤트
-    $('form').on('submit', function(event) {
-        event.preventDefault(); // 기본 제출 이벤트를 막습니다
+    $('#registration-form').on('submit', function(event) {
+        event.preventDefault(); // 기본 제출 방지
 
-        if ($('input[type="submit"]').prop('disabled')) {
-            return; // 버튼이 비활성화된 상태라면 종료
-        }
-
-        var formData = {
-            memberId: $('input[name="username"]').val(),
-            memberPasswd: $('input[name="password"]').val(),
-            memberName: $('input[name="name"]').val(),
-            memberTel: $('input[name="phone"]').val(),
-            memberEmail: $('input[name="email"]').val(),
-            verificationCode: $('input[name="verification_code"]').val()
-        };
-	
-		// undefined 에러를 방지하기 위해 formData 출력
-   		console.log('Form Data:', formData);
-		
-        $.ajax({
-            url: '/register/submit', // 서버의 회원가입 처리 컨트롤러 URL
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(formData),
-            success: function(response) {
-                if (response.message === '회원가입 성공') {
+        if (Object.values(validationState).every(value => value === true)) {
+            $.ajax({
+                url: '/api/register',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    memberId: $('input[name="username"]').val(),
+    				memberPasswd: $('input[name="password"]').val(),
+    				memberName: $('input[name="name"]').val(),
+    				memberTel: $('input[name="phone"]').val(),
+    				memberEmail: $('input[name="email"]').val(),
+    				verificationCode: $('input[name="verification_code"]').val()
+                }),
+                success: function(response) {
                     alert('회원가입이 성공적으로 완료되었습니다.');
-                    window.location.href = '/main'; // 메인 페이지로 리다이렉트
-                } else {
-                    alert(response.message);
-
-                    // 인증번호가 틀린 경우 메시지를 alert로 표시
-                    if (response.message === '인증번호가 틀립니다') {
-                        alert('인증번호가 틀립니다. 다시 입력해주세요.');
-                        validationState.verificationCode = false;
-                    }
+                    window.location.href = '/main'; // 회원가입 성공 후 로그인 페이지로 이동
+                },
+                error: function() {
+                    alert('회원가입에 실패했습니다.');
                 }
-            },
-            error: function() {
-                alert('서버 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
+            });
+        } else {
+            alert('양식이 올바르게 입력되지 않았습니다.');
+        }
     });
 });
+console.log("아이디:", $('input[name="username"]').val());
+console.log("비밀번호:", $('input[name="password"]').val());
+console.log("이름:", $('input[name="name"]').val());
+console.log("전화번호:", $('input[name="phone"]').val());
+console.log("이메일:", $('input[name="email"]').val());
+console.log("인증번호:", $('input[name="verification_code"]').val());

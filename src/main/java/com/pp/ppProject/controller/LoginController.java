@@ -1,28 +1,22 @@
 package com.pp.ppProject.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.pp.ppProject.domain.MemberEntity;
 import com.pp.ppProject.repository.MemberRepository;
 import com.pp.ppProject.service.LoginService;
 import com.pp.ppProject.service.RegisterMail;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
+@RequestMapping("/api")
 public class LoginController {
 
     private final LoginService loginService;
@@ -36,19 +30,24 @@ public class LoginController {
         this.memberRepository = memberRepository;
     }
 
-    // 회원가입 폼을 보여주는 메서드
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("member", new MemberEntity());
         return "login/register";
     }
 
-    // 회원가입 요청을 처리하는 메서드
-    @PostMapping("/register/submit")
+    @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody MemberEntity memberEntity) {
-        Map<String, String> response = new HashMap<>();        
-        try {       
+        Map<String, String> response = new HashMap<>();
+
+        // 비밀번호 유효성 검사 추가
+        if (memberEntity.getMemberPasswd() == null || memberEntity.getMemberPasswd().trim().isEmpty()) {
+            response.put("message", "비밀번호는 null이거나 빈 문자열일 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        try {
             boolean isRegistered = loginService.registerUser(memberEntity);
             if (isRegistered) {
                 response.put("message", "회원가입 성공");
@@ -59,61 +58,58 @@ public class LoginController {
             }
         } catch (Exception e) {
             response.put("message", "오류 발생");
-            e.printStackTrace();  // 스택 트레이스를 로그에 출력
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
 
-
-    // 이메일 인증 코드 발송
     @PostMapping("/sendVerificationCode")
     @ResponseBody
     public ResponseEntity<String> sendVerificationCode(@RequestParam("email") String email) {
         try {
-            // 이메일 발송
             String code = registerMail.sendSimpleMessage(email);
-
             if (code != null && !code.isEmpty()) {
                 return ResponseEntity.ok("SENT");
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAILED");
             }
         } catch (Exception e) {
-            e.printStackTrace(); // 로그에 오류를 출력
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("FAILED");
         }
     }
 
-    // 아이디 중복 확인
-    @GetMapping("/register/checkUsername")
+    @GetMapping("/checkUsername")
     @ResponseBody
-    public String checkUsername(@RequestParam("username") String username) {
+    public ResponseEntity<String> checkUsername(@RequestParam("username") String username) {
         if (!username.matches("^[a-zA-Z0-9]*$")) {
-            return "INVALID";  // 아이디가 영어와 숫자만으로 구성되지 않은 경우
+            return ResponseEntity.ok("INVALID");
         }
 
         boolean exists = memberRepository.existsByMemberId(username);
         if (exists) {
-            return "EXIST";  // 이미 아이디가 존재하는 경우
+            return ResponseEntity.ok("EXIST");
         } else {
-            return "AVAILABLE";  // 사용 가능한 아이디인 경우
+            return ResponseEntity.ok("AVAILABLE");
         }
     }
 
-    
-
-    // 이메일 유효성 검사
-    @GetMapping("/register/validateEmail")
+    @GetMapping("/validateEmail")
+    @ResponseBody
     public ResponseEntity<String> validateEmail(@RequestParam("email") String email) {
+        System.out.println("Received email for validation: " + email);  // 로그 출력
         String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
         if (email.matches(emailRegex)) {
+            System.out.println("Email is valid.");
             return ResponseEntity.ok("VALID");
         } else {
+            System.out.println("Email is invalid.");
             return ResponseEntity.ok("INVALID");
         }
     }
-    
+
+
     @PostMapping("/verifyCode")
     @ResponseBody
     public ResponseEntity<Map<String, Boolean>> verifyCode(@RequestBody Map<String, String> request) {

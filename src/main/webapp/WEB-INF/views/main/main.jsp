@@ -24,7 +24,7 @@
             <input type="submit" value="로그인">
         </form>
         <div class="signup-link">
-            <p>계정이 없으신가요? <a href="register">회원가입</a></p>
+            <p>계정이 없으신가요? <a href="${pageContext.request.contextPath}/api/register">회원가입</a></p>
         </div>
     </div>
 </body>

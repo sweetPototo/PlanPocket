@@ -29,7 +29,7 @@ public class MemberEntity {
    @Column(length = 50, nullable = false) // NOT NULL 설정
    private String memberId;
 
-   @Column(length = 50, nullable = false) // NOT NULL 설정
+   @Column(length = 100, nullable = false) // NOT NULL 설정
    private String memberPasswd;
 
    @Column(length = 50, nullable = false) // NOT NULL 설정

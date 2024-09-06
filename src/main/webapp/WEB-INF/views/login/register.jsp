@@ -5,26 +5,26 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style>
-        /* 타이머 스타일 */
-        #timer {
-            font-weight: bold;
-            margin-left: 10px;
-            color: green; /* 타이머 색상 */
-        }
-    </style>
+    /* 타이머 스타일 */
+    #timer {
+        font-weight: bold;
+        margin-left: 10px;
+        color: red; /* 타이머 색상 */
+    }
+</style>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>[PP]회원가입</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/login.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
+    <meta charset="UTF-8">
+    <title>[PP]회원가입</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
 </head>
 <body>
     <div class="register-container">
         <h2>회원가입</h2>
-        <form action="submit" method="post">
+        <form id="registration-form">
             <input type="text" name="username" maxlength="12" placeholder="아이디" required>
             <div class="message"></div> <!-- 아이디 메시지 -->
             <input type="password" name="password" placeholder="비밀번호" required>
@@ -40,9 +40,9 @@
                 <button class="btn btn-outline-primary" type="button" id="send-code">인증번호 전송</button>
                 <span id="timer">00:00</span>
             </div>
-            <div class="email-message" style="color: red; font-size: 12px;"></div> <!-- 이메일 메시지 -->
+            <div class="email-message" style="font-size: 12px;"></div> <!-- 이메일 메시지 -->
             <input type="text" name="verification_code" placeholder="인증번호 입력" required>
-            <div class="verification-message" style="color: red; font-size: 12px;"></div> <!-- 인증번호 메시지 -->
+            <div class="verification-message" style="font-size: 12px;"></div> <!-- 인증번호 메시지 -->
             <input type="submit" value="회원가입">
         </form>
     </div>
