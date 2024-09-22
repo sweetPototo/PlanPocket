@@ -11,7 +11,8 @@
 </head>
 <body>
 	<!-- <a href="${pageContext.request.contextPath}/information/${memberNo}">  -->
-	<a href="javascript:fetchMethod('', '/information/${sessionScope.memberNo}','GET')"> 거래 입력하기 </a>
+	<a href="javascript:fetchMethod_get('/information/${sessionScope.memberNo}'
+	,'information/information_input.jsp')"> 거래 입력하기 </a>
 	<br>${pageContext.request.contextPath}
 </body>
 </html>

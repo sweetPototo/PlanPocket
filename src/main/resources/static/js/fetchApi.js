@@ -1,7 +1,7 @@
-function fetchMethod(req, url, method){
+function fetchMethod_post(req, url){
 	//fetch api를 이용하여 전송
 	fetch(url, { //요청보낼 서버 URL
-		method: method,  //HTTP 메서드로 post 사용
+		method: 'POST',  //HTTP 메서드로 post 사용
 		headers: {
 			'Content-Type' : 'application/json' //헤더를 설정하여 보낼 데이터가 json임을 알림
 		},
@@ -20,6 +20,25 @@ function fetchMethod(req, url, method){
 	.catch(error => {
 		alert('죄송합니다. 다시 시도해주십시오')
 		console.error('information_account having error', error);
-		window.history.back();
+		window.location.href = '/main';
+	})
+}
+    
+function fetchMethod_get(url, nextUrl){
+	fetch(url)
+	.then(response => {
+		if (!response.ok) {
+     	 	throw new Error('Network response was not ok');
+    	}
+  		return response.json()
+  	})
+	.then(data => {
+		console.log(data)
+        window.location.href = nextUrl;  // 성공 시 페이지 전환
+    })
+    .catch(error => {
+		alert('죄송합니다. 다시 시도해주십시오')
+        console.error('information_account having error', error);
+		window.location.href = '/main';  // 실패 시 에러 페이지로 전환
 	})
 }

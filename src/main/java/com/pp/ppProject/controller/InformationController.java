@@ -3,7 +3,9 @@ package com.pp.ppProject.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.pp.ppProject.domain.category.AccountCategory;
 import com.pp.ppProject.domain.category.TransactionCategory;
@@ -40,12 +43,14 @@ public class InformationController {
 	}
 	
 	@GetMapping("/{memberNo}")
-	   public String input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
-		List<AccountDTO> account = new ArrayList<>();
-		account = infoService.selectMemberNo(memberNo);
-		req.setAttribute("account", account);
-		req.setAttribute("tCate", TransactionCategory.values());
-		return "information/information_input";
+	   public ResponseEntity<Map<String,Object>> input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
+		List<AccountDTO> account = infoService.selectMemberNo(memberNo);
+		Map<String,Object> result = new HashMap<>();
+		result.put("account", account);
+		result.put("tCate", TransactionCategory.values());
+		//req.setAttribute("tCate", TransactionCategory.values());
+		//ModelAndView mav = new ModelAndView("information/information_input");
+		return ResponseEntity.ok().body(result);
 	   }
 	
 	@PostMapping("/{memberNo}/input")
