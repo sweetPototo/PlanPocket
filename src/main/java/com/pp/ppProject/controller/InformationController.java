@@ -43,14 +43,13 @@ public class InformationController {
 	}
 	
 	@GetMapping("/{memberNo}")
-	   public ResponseEntity<Map<String,Object>> input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
+	   public ModelAndView input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
 		List<AccountDTO> account = infoService.selectMemberNo(memberNo);
 		Map<String,Object> result = new HashMap<>();
-		result.put("account", account);
-		result.put("tCate", TransactionCategory.values());
-		//req.setAttribute("tCate", TransactionCategory.values());
-		//ModelAndView mav = new ModelAndView("information/information_input");
-		return ResponseEntity.ok().body(result);
+		req.setAttribute("account", account);
+		req.setAttribute("tCate", TransactionCategory.values());
+		ModelAndView mav = new ModelAndView("information/information_input");
+		return mav;
 	   }
 	
 	@PostMapping("/{memberNo}/input")
