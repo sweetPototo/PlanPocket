@@ -48,6 +48,7 @@ public class InformationController {
 		Map<String,Object> result = new HashMap<>();
 		req.setAttribute("account", account);
 		req.setAttribute("tCate", TransactionCategory.values());
+		req.setAttribute("aCate", AccountCategory.values());
 		ModelAndView mav = new ModelAndView("information/information_input");
 		return mav;
 	   }

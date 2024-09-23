@@ -11,8 +11,26 @@
     display: flex;
 }
 
-.top .left, .top .right , .top .center {
+.top .left .half {
+    flex: 2;
+    display: flex;
+}
+
+.top .left .half .left ,  .top .left .half .right {
     flex: 1;
+    display: flex;
+     border: 1px solid white;
+}
+
+.top .center {
+    flex: 1;
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 28px;
+}
+
+.top .left , .top .right {
+    flex: 2;
     border: 1px solid black;
     padding: 10px;
     font-size: 28px;
