@@ -20,10 +20,8 @@
 
 <%@ include file="information_top.jsp"%>
 <body>
-	<form name="f" method="post" action="${pageContext.request.contextPath}/information/${memberNo}/input">
 	<div class="container">
 		<div class="top">
-			
 			<!-- Top_Center site -->
 			<div class="left">
 				<h4>[계좌 추가]</h4>
@@ -53,10 +51,11 @@
 					<input type="text" name="accountDetail">
 				</div>
 				<div class="button-container">
-					<button type="button" class="button" onclick="check()"> 추가 </button>
+					<button type="button" class="button" onclick="accountCheck()"> 추가 </button>
 					<button type="button" class="button" onclick="reseting()"> 초기화 </button>
 				</div>
 			</div>
+			
 			
 			<!-- Top_Left site -->
 			<div class="center">
@@ -70,6 +69,7 @@
 					<button type="button" class="button" onclick="addAccount()"> 추가 </button>
 				</div> -->
 			</div>
+			
 			
 			<!-- Top_Right site -->
 			<div class="right">
@@ -120,7 +120,6 @@
 			</div>
 		</div>
 	</div>
-	</form>
 </body>
 <%@ include file="information_bottom.jsp"%>
 </html>

@@ -1,5 +1,5 @@
 //거래추가 유효성검사
-function tranCheck() { 
+/*function tranCheck() { 
    if(f.accountNo.value==""){
           alert('결제수단을 선택해주세요.');
            return;
@@ -33,33 +33,48 @@ function tranReseting() {
 function addAccount() {
 	window.location.href = "/information/account";
 }
+*/
+
+//계좌 관련 함수 및 필드
+let accountName, accountCategory, accountBalance, accountDetail;
 
 //계좌 유효성검사
 function accountCheck() { 
-   if(f.accountName.value==""){
+	accountName = document.getElementById('accountName').value;
+	accountCategory = document.getElementById('accountCategory').value;
+	accountBalance = document.getElementById('accountBalance').value;
+	accountDetail = document.getElementById('accountDetail').value;
+	
+   if(accountName==""){
           alert('계좌 이름을 지정해주세요.');
-          f.accountName.focus();
+          document.getElementById('accountName').focus();
            return;
    }
-   /* var amount = f.tranAmount.value;
-  
-   var hpExptext = /^[0-9]+/;
-   if(hpExptext.test(amount)==false){
-      alert("금액에는 숫자만 입력 가능합니다.");
-      f.tranAmount.focus();
-      return;
-   } */
    
-   if(f.accountDetail.value==""){
-      document.f.accountDetail.value = " ";
+   if(accountCategory=="no"){
+          alert('소비 카테고리를 지정해주세요.');
+          document.getElementById('accountCategory').focus();
+           return;
    }
-    submit();
+   
+   if(accountBalance == 0){
+          alert('잔액을 입력해주세요.');
+          document.getElementById('accountBalance').focus();
+           return;
+   }
+  
+   if(accountDetail==""){
+      accountDetail= " ";
+   }
+   
+    accountSubmit();
    }
    
 function accountReseting() {
-	f.accountName.value = null;
-	f.accountCategory.value = "1";
-	f.accountDetail.value = null;
+	accountName= null;
+	accountCategory= "no";
+	accountDetail= null;
+	accountBalance=null;
 	return;
 	
 }
@@ -67,14 +82,14 @@ function accountReseting() {
 function accountSubmit() {
 	//객체로 값 저장
 	const accountRequest = {
-		accountName : document.getElementById('accountName').value, //계좌 이름
-		accountCategory : document.getElementById('accountCategory').value, //계좌 카테고리
-		accountDetail : document.getElementById('accountDetail').value, //계좌 설명
+		accountName : accountName, //계좌 이름
+		accountCategory : accountCategory, //계좌 카테고리
+		accountDetail : accountDetail, //계좌 설명
 		memberNo : '${sessionScope.memberNo}', //회원번호
-		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
+		accountBalance : accountBalance //계좌 잔액
 	}
 	const url = '/information/${sessionScope.memberNo}/account';
 	const method = 'POST';
 	
-	fetchMethod(accountRequest, url, method);
+	fetchMethod(accountRequest, url);
 }
