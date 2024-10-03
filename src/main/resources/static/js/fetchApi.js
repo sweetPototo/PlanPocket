@@ -15,7 +15,7 @@ function fetchMethod_post(req, url){
 	})
 	.then(data => {  //서버로부터 받은 응답 메세지
 		alert(data.msg);
-		window.location.href = data.url;
+		window.location.reload();
 	})
 	.catch(error => {
 		alert('죄송합니다. 다시 시도해주십시오')

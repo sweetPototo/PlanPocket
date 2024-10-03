@@ -27,13 +27,13 @@
 				<h4>[계좌 추가]</h4>
 				<div class = "form-row">
 					<label>계좌 이름</label>
-					<input type="text" name="accountName">
+					<input type="text" id="accountName">
 				</div>
 				<div class="form-row">
 					<div class="half">
 						<div class="left">
 							<label>소비 카테고리</label> 
-							<select name="accountCategory">
+							<select id="accountCategory">
 								<option value="no">- 선택 -
 								<c:forEach var="cate" items="${aCate}">
 									<option value="${cate.accountCategoryCode}">${cate.accountCategoryName}
@@ -42,13 +42,13 @@
 						</div>
 						<div class="right">
 							<label>계좌 잔액</label>
-							<input type="number" name="accountBalance">
+							<input type="number" id="accountBalance">
 						</div>
 					</div>
 				</div>	
 				<div class = "form-row">
 					<label>계좌 설명</label>
-					<input type="text" name="accountDetail">
+					<input type="text" id="accountDetail">
 				</div>
 				<div class="button-container">
 					<button type="button" class="button" onclick="accountCheck()"> 추가 </button>

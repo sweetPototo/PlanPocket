@@ -71,27 +71,23 @@ public class InformationController {
 		return map;
 	}
 	
-	@GetMapping("/{memberNo}/account")
-	public String accountGet(HttpServletRequest req) {
-		log.info("start account method");
-		req.setAttribute("aCate", AccountCategory.values());
-		return "information/information_account";
-	}
+//	@GetMapping("/{memberNo}/account")
+//	public String accountGet(HttpServletRequest req) {
+//		log.info("start account method");
+//		req.setAttribute("aCate", AccountCategory.values());
+//		return "information/information_account";
+//	}
 	
 	@PostMapping("/{memberNo}/account")
 	public HashMap<String, String> accountPost(@ModelAttribute AccountRequestDTO dto, HttpServletRequest req) {
 		boolean isAdd = infoService.addAccount(dto);
-		String msg, url = "";
+		HashMap<String, String> map = new HashMap<>();
 		if(isAdd){
-			msg = "계좌 등록이 완료되었습니다.";
-			url = "/information/" + dto.getMemberNo();
+			map.put("msg", "계좌 등록이 완료되었습니다.");
 		}else {
-			msg = "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.";
-			url = "";
+			map.put("msg", "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.");
 		}
-		HashMap<String, String> map = setMessage(msg, url);
 		return map;
 	}
-	
 	
 }

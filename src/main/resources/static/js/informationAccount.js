@@ -1,5 +1,5 @@
-function check() { 
-   if(f.accountName.value==""){
+function accountCheck() { 
+   if(document.getElementById('accountName')==""){
           alert('계좌 이름을 지정해주세요.');
           f.accountName.focus();
            return;
@@ -12,17 +12,21 @@ function check() {
       f.tranAmount.focus();
       return;
    } */
-   
-   if(f.accountDetail.value==""){
-      document.f.accountDetail.value = " ";
+   if(document.getElementById('accountCategory')=="no"){
+	   alert('카테고리를 지정해주세요.');
+          document.getElementById('accountCategory').focus();
+           return;
+   }
+   if(document.getElementById('accountDetail')==""){
+      document.getElementById('accountDetail') = " ";
    }
     submit();
    }
    
 function reseting() {
-	f.accountName.value = null;
-	f.accountCategory.value = "1";
-	f.accountDetail.value = null;
+	document.getElementById('accountName').value = null;
+	document.getElementById('accountCategory') = "1";
+	document.getElementById('accountDetail') = null;
 	return;
 	
 }
@@ -37,7 +41,6 @@ function submit() {
 		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
 	}
 	const url = '/information/${sessionScope.memberNo}/account';
-	const method = 'POST';
 	
-	fetchMethod(accountRequest, url, method);
+	fetchMethod_post(accountRequest, url);
 }
