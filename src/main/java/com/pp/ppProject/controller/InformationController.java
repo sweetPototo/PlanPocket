@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -78,13 +79,17 @@ public class InformationController {
 //		return "information/information_account";
 //	}
 	
+	//Response Entity 만든 후 httpstatus에 따른 결과값 지정해주기
 	@PostMapping("/{memberNo}/account")
-	public HashMap<String, String> accountPost(@ModelAttribute AccountRequestDTO dto, HttpServletRequest req) {
+	public HashMap<String, String> accountPost(@RequestBody AccountRequestDTO dto, HttpServletRequest req) {
+		log.info("계좌 등록 시작");
 		boolean isAdd = infoService.addAccount(dto);
 		HashMap<String, String> map = new HashMap<>();
 		if(isAdd){
-			map.put("msg", "계좌 등록이 완료되었습니다.");
+			//map.put("msg", "계좌 등록이 완료되었습니다.");
+			map.put("Success", HttpStatus.OK);
 		}else {
+			//map.put("msg", "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.");
 			map.put("msg", "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.");
 		}
 		return map;

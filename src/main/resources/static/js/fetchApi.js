@@ -20,7 +20,7 @@ function fetchMethod_post(req, url){
 	.catch(error => {
 		alert('죄송합니다. 다시 시도해주십시오')
 		console.error('information_account having error', error);
-		window.location.href = '/main';
+		//window.location.href = '/main';
 	})
 }
     
