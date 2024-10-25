@@ -20,7 +20,7 @@ public class DepoWithdDTO {
 	private String tranDetail;
 	private int memberNo;
 	
-	public static DepoWithdDTO createTranDTO(InputTransactionRequestDTO inputDto, int memberNo) {
+	public static DepoWithdDTO createTranDTO(InputTransactionRequestDTO inputDto) {
 		return DepoWithdDTO.builder()
 				.accountNo(Integer.parseInt(inputDto.getAccountNo()))
 				.tranDate(inputDto.getTranDate())
@@ -28,7 +28,7 @@ public class DepoWithdDTO {
 				.tranCategoryCode(Integer.parseInt(inputDto.getTranCategoryCode()))
 				.tranAmount(Integer.parseInt(inputDto.getTranAmount()))
 				.tranDetail(inputDto.getTranDetail())
-				.memberNo(memberNo)
+				.memberNo(inputDto.getMemberNo())
 				.build();
 	}
 }

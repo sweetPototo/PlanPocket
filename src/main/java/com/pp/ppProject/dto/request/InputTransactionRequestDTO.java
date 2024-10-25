@@ -17,7 +17,11 @@ public class InputTransactionRequestDTO {
 	private String tranCategoryCode;
 	private String tranAmount;
 	private String tranDetail;
+	private int memberNo;
 	
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
 //	@ConstructorProperties({"accountNo", "tranDate", "tranType", "tranCategoryCode", "tranAmount", "tranDetail"})
 //	public InputTransactionRequestDTO(String accountNo, String tranDate, String tranType, String tranCategoryCode, String tranAmount, String tranDetail) {
 //		this.accountNo = accountNo;

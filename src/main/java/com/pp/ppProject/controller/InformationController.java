@@ -54,11 +54,17 @@ public class InformationController {
 		return mav;
 	   }
 	
+	@GetMapping("users")
+    public ResponseEntity getAllUsers() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+	
 	@PostMapping("/{memberNo}/input")
-	public HashMap<String, String> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
+	public ResponseEntity<String> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
 			HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
-		log.info("Controller accountNo = " + inputDto.getAccountNo());
-		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto, memberNo);
+		log.info("Controller accountNo = {}", inputDto.getAccountNo());
+		inputDto.setMemberNo(memberNo);
+		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto);
 		String msg, url = "";
 		boolean isAdd = infoService.addTran(dto);
 		if(isAdd){
