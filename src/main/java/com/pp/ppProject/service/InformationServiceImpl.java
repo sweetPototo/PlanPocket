@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import com.pp.ppProject.domain.AccountEntity;
 import com.pp.ppProject.domain.DepoWithdEntity;
+import com.pp.ppProject.dto.ResultCode;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
+import com.pp.ppProject.dto.response.Message;
 import com.pp.ppProject.repository.AccountRepository;
 import com.pp.ppProject.repository.DepoWithdRepository;
 
@@ -26,13 +29,15 @@ public class InformationServiceImpl implements InformationService {
 	private final DepoWithdRepository depoRepository;
 	
 	@Override
-	public boolean addAccount(AccountRequestDTO dto) {
+	public Message addAccount(AccountRequestDTO dto) {
 		AccountEntity account = AccountEntity.createAccountEntity(dto);
 		log.info("added account name : " + account.getAccountName());
-		accountRepository.save(account);
-		if(!accountRepository.findById(account.getAccountNo()).isEmpty())
-			return true;
-		else return false;
+		try {
+			accountRepository.save(account);
+			return Message.settingMsg(ResultCode.SUCCESS_CREATE, "계좌 저장 성공");
+		} catch(ConstraintViolationException e) {  //제약 조건 위반 시
+			return Message.settingMsg(ResultCode.FAILED_BADREQUEST, "제약조건 위반으로 인한 저장 실패");
+		}
 	}
 
 	@Override
@@ -49,29 +54,34 @@ public class InformationServiceImpl implements InformationService {
 		}
 		return list;
 	}
+	
+	private AccountEntity changeEntityAccount(Optional<AccountEntity> accountOt) {
+		AccountEntity account = AccountEntity.builder()
+				.accountBalance(accountOt.get().getAccountBalance())
+				.build();
+		return account;
+	}
 
 	//DepoWithd에 거래내역이 입력되면 트리거가 발동 -> account에 자동으로 잔액 update
 	@Override
-	public boolean addTran(DepoWithdDTO dto) {
-		Optional<AccountEntity> account = accountRepository.findById(dto.getAccountNo());
+	public Message addTran(DepoWithdDTO dto) {
+		Optional<AccountEntity> accountOt = accountRepository.findById(dto.getAccountNo());
+		AccountEntity account = changeEntityAccount(accountOt);
 		int balance = 0;
 		//0 = 지출, 1 = 입금
 		if(dto.getTranType() == 1) {
-			balance = account.get().getAccountBalance() + dto.getTranAmount();
+			balance = account.getAccountBalance() + dto.getTranAmount();
 		}else {
-			balance = account.get().getAccountBalance() - dto.getTranAmount();
+			balance = account.getAccountBalance() - dto.getTranAmount();
 		}
 		dto.setBalance(balance);
 		DepoWithdEntity depo = DepoWithdEntity.createTransactionEntity(dto);
-		depoRepository.save(depo);
-		
-		DepoWithdEntity e = depoRepository.findTopByMemberMemberNoOrderByTranDateDesc(dto.getMemberNo());
-		int b = e.getTranBalance();
-		log.info("The Balance of Top Date = " + b);
-		
-		if(!depoRepository.findById(depo.getTranNo()).isEmpty())
-			return true;
-		else return false;
+		try {
+			depoRepository.save(depo);
+		}catch(ConstraintViolationException e) {
+			log.info("거래내역 저장 실패 : {}", getClass().getName());
+		}
+		return null;//이후 수정
 	}
 
 }

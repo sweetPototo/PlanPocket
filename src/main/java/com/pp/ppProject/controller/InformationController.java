@@ -21,6 +21,7 @@ import com.pp.ppProject.domain.category.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.InputTransactionRequestDTO;
+import com.pp.ppProject.dto.response.Message;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
 import com.pp.ppProject.service.InformationService;
 
@@ -54,28 +55,24 @@ public class InformationController {
 		return mav;
 	   }
 	
-	@GetMapping("users")
-    public ResponseEntity getAllUsers() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
-	
 	@PostMapping("/{memberNo}/input")
-	public ResponseEntity<String> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
+	public ResponseEntity<Message> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
 			HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
+		
 		log.info("Controller accountNo = {}", inputDto.getAccountNo());
 		inputDto.setMemberNo(memberNo);
 		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto);
 		String msg, url = "";
-		boolean isAdd = infoService.addTran(dto);
-		if(isAdd){
-			msg = "가계부가 입력되었습니다.";
-			url = "/information/" + dto.getMemberNo();
-		}else {
-			msg = "가계부가 입력되지 않았습니다. 다시 시도해주세요.";
-			url = "";
-		}
-		HashMap<String, String> map = setMessage(msg, url);
-		return map;
+//		boolean isAdd = infoService.addTran(dto);
+//		if(isAdd){
+//			msg = "가계부가 입력되었습니다.";
+//			url = "/information/" + dto.getMemberNo();
+//		}else {
+//			msg = "가계부가 입력되지 않았습니다. 다시 시도해주세요.";
+//			url = "";
+//		}
+//		HashMap<String, String> map = setMessage(msg, url);
+		return null;
 	}
 	
 //	@GetMapping("/{memberNo}/account")
@@ -87,18 +84,10 @@ public class InformationController {
 	
 	//Response Entity 만든 후 httpstatus에 따른 결과값 지정해주기
 	@PostMapping("/{memberNo}/account")
-	public HashMap<String, String> accountPost(@RequestBody AccountRequestDTO dto, HttpServletRequest req) {
+	public ResponseEntity<Message> accountPost(@RequestBody AccountRequestDTO dto, HttpServletRequest req) {
 		log.info("계좌 등록 시작");
-		boolean isAdd = infoService.addAccount(dto);
-		HashMap<String, String> map = new HashMap<>();
-		if(isAdd){
-			//map.put("msg", "계좌 등록이 완료되었습니다.");
-			map.put("Success", HttpStatus.OK);
-		}else {
-			//map.put("msg", "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.");
-			map.put("msg", "계좌 등록이 완료되지 않았습니다. 다시 시도해주세요.");
-		}
-		return map;
+		Message msg = infoService.addAccount(dto);
+		return new ResponseEntity<Message>(msg, HttpStatus.OK);
 	}
 	
 }
