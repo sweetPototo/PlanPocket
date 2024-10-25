@@ -51,7 +51,7 @@
 					<input type="text" id="accountDetail">
 				</div>
 				<div class="button-container">
-					<button type="button" class="button" onclick="accountCheck()"> 추가 </button>
+					<button type="button" class="button" onclick="accountCheck('${sessionScope.memberNo }')"> 추가 </button>
 					<button type="button" class="button" onclick="reseting()"> 초기화 </button>
 				</div>
 			</div>

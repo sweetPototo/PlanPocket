@@ -1,4 +1,4 @@
-package com.pp.ppProject.dto;
+package com.pp.ppProject.domain.enums;
 
 import org.springframework.http.HttpStatus;
 

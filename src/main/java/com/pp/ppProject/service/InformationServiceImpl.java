@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pp.ppProject.domain.AccountEntity;
 import com.pp.ppProject.domain.DepoWithdEntity;
-import com.pp.ppProject.dto.ResultCode;
+import com.pp.ppProject.domain.enums.ResultCode;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.DepoWithdDTO;

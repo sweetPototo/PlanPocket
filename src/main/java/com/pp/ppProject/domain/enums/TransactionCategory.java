@@ -1,4 +1,4 @@
-package com.pp.ppProject.domain.category;
+package com.pp.ppProject.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

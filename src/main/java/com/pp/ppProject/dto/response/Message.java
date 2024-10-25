@@ -1,7 +1,7 @@
 package com.pp.ppProject.dto.response;
 
 
-import com.pp.ppProject.dto.ResultCode;
+import com.pp.ppProject.domain.enums.ResultCode;
 
 import lombok.Getter;
 

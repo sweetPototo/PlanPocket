@@ -1,4 +1,4 @@
-function accountCheck() { 
+function accountCheck(memberNo) { 
    if(document.getElementById('accountName')==""){
           alert('계좌 이름을 지정해주세요.');
           f.accountName.focus();
@@ -20,7 +20,7 @@ function accountCheck() {
    if(document.getElementById('accountDetail')==""){
       document.getElementById('accountDetail') = " ";
    }
-    submit();
+    submit(memberNo);
    }
    
 function reseting() {
@@ -31,16 +31,17 @@ function reseting() {
 	
 }
 
-function submit() {
+function submit(memberNo) {
 	//객체로 값 저장
 	const accountRequest = {
 		accountName : document.getElementById('accountName').value, //계좌 이름
 		accountCategory : document.getElementById('accountCategory').value, //계좌 카테고리
 		accountDetail : document.getElementById('accountDetail').value, //계좌 설명
-		memberNo : '${sessionScope.memberNo}', //회원번호
+		memberNo : memberNo, //회원번호
 		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
 	}
-	const url = '/information/${sessionScope.memberNo}/account';
+	const url = '/information/' + accountRequest.memberNo + '/account';
+	console.log(url);
 	
 	fetchMethod_post(accountRequest, url);
 }

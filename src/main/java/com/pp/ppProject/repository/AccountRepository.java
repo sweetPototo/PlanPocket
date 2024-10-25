@@ -14,4 +14,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
 	//로그인 계정에 해당하는 계좌 찾기
 	public List<AccountEntity> findByMemberMemberNo(int memberNo);
 	
+	
 }

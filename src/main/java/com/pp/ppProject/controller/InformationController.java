@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pp.ppProject.domain.category.AccountCategory;
-import com.pp.ppProject.domain.category.TransactionCategory;
+import com.pp.ppProject.domain.enums.AccountCategory;
+import com.pp.ppProject.domain.enums.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.InputTransactionRequestDTO;
@@ -75,16 +75,10 @@ public class InformationController {
 		return null;
 	}
 	
-//	@GetMapping("/{memberNo}/account")
-//	public String accountGet(HttpServletRequest req) {
-//		log.info("start account method");
-//		req.setAttribute("aCate", AccountCategory.values());
-//		return "information/information_account";
-//	}
-	
 	//Response Entity 만든 후 httpstatus에 따른 결과값 지정해주기
-	@PostMapping("/{memberNo}/account")
-	public ResponseEntity<Message> accountPost(@RequestBody AccountRequestDTO dto, HttpServletRequest req) {
+	//@PostMapping(value = "/{memberNo}/account", consumes = "application/json")
+	@PostMapping(value = "/{memberNo}/account")
+	public ResponseEntity<Message> accountPost(@RequestBody AccountRequestDTO dto) {
 		log.info("계좌 등록 시작");
 		Message msg = infoService.addAccount(dto);
 		return new ResponseEntity<Message>(msg, HttpStatus.OK);

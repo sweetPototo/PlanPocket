@@ -4,11 +4,14 @@ import java.beans.ConstructorProperties;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountRequestDTO {
 
@@ -27,4 +30,7 @@ public class AccountRequestDTO {
 	        this.accountBalance = accountBalance;
 	    }
 	
+	 public void memberNoSetting(String memberNo) {
+		 this.memberNo = memberNo;
+	 }
 }
