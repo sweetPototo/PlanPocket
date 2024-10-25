@@ -20,6 +20,10 @@ public class DepoWithdDTO {
 	private String tranDetail;
 	private int memberNo;
 	
+	public void setBalance(int balance) {
+		this.tranBalance = balance;
+	}
+	
 	public static DepoWithdDTO createTranDTO(InputTransactionRequestDTO inputDto) {
 		return DepoWithdDTO.builder()
 				.accountNo(Integer.parseInt(inputDto.getAccountNo()))

@@ -56,11 +56,13 @@ public class InformationServiceImpl implements InformationService {
 		Optional<AccountEntity> account = accountRepository.findById(dto.getAccountNo());
 		int balance = 0;
 		//0 = 지출, 1 = 입금
-		if(dto.getTranType() == 1)
+		if(dto.getTranType() == 1) {
 			balance = account.get().getAccountBalance() + dto.getTranAmount();
-		else
+		}else {
 			balance = account.get().getAccountBalance() - dto.getTranAmount();
-		DepoWithdEntity depo = DepoWithdEntity.createTransactionEntity(dto, balance);
+		}
+		dto.setBalance(balance);
+		DepoWithdEntity depo = DepoWithdEntity.createTransactionEntity(dto);
 		depoRepository.save(depo);
 		
 		DepoWithdEntity e = depoRepository.findTopByMemberMemberNoOrderByTranDateDesc(dto.getMemberNo());

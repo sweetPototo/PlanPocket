@@ -59,7 +59,7 @@ public class DepoWithdEntity {
 	private int tranCategory;
 	private String tranDetail;
 	
-	public static DepoWithdEntity createTransactionEntity(DepoWithdDTO dto, int balance) {
+	public static DepoWithdEntity createTransactionEntity(DepoWithdDTO dto) {
 		MemberEntity m = MemberEntity.builder().memberNo(dto.getMemberNo()).build();
 		AccountEntity a = AccountEntity.builder().accountNo(dto.getAccountNo()).build();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
@@ -69,7 +69,7 @@ public class DepoWithdEntity {
 				.account(a)
 				.tranType(dto.getTranType())
 				.tranAmount(dto.getTranAmount())
-				.tranBalance(balance)
+				.tranBalance(dto.getTranBalance())
 				.tranDate(LocalDate.parse(dto.getTranDate(), formatter))
 				.tranCategory(dto.getTranCategoryCode())
 				.tranDetail(dto.getTranDetail())
