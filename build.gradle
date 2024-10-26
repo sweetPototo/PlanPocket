@@ -51,6 +51,11 @@ dependencies {
 	// Test 의존성
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	implementation 'com.googlecode.json-simple:json-simple:1.1'
+	// Json 라이브러리 https://mvnrepository.com/artifact/org.json/json
+	//implementation group: 'org.json', name: 'json', version: '20240303'
+	
 }
 
 tasks.withType(JavaCompile) {

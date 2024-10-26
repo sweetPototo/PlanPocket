@@ -75,12 +75,12 @@ public class InformationController {
 		return null;
 	}
 	
-	@PostMapping(value = "/{memberNo}/account", consumes = "application/json")
-	//@PostMapping(value = "/{memberNo}/account")
+	//@PostMapping(value = "/{memberNo}/account", consumes = "application/json; charset=utf-8")
+	@PostMapping(value = "/{memberNo}/account")
 	public ResponseEntity<ResponseObject> accountPost(@RequestBody AccountRequestDTO dto) {
 		log.info("계좌 등록 시작");
-		ResponseObject msg = infoService.addAccount(dto);
-		return new ResponseEntity<ResponseObject>(msg, HttpStatus.OK);
+		ResponseObject responseObject = infoService.addAccount(dto);
+		return new ResponseEntity<ResponseObject>(responseObject, responseObject.getCode().getStatus());
 	}
 	
 }

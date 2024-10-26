@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Builder
 @Getter
-@Setter
+@Setter  //@RequestBody때문에 붙임g
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountRequestDTO {
 

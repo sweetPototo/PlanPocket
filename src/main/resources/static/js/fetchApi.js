@@ -1,26 +1,29 @@
 function fetchMethod_post(req, url){
-	//fetch api를 이용하여 전송
-	fetch(url, { //요청보낼 서버 URL
-		method: 'POST',  //HTTP 메서드로 post 사용
+	/*
+	 * req ; 사용자로부터 입력받은 데이터 -> 서버에 저장할 객체
+	 * url : 서버로 요청보낼 주소
+	 */
+	
+	fetch(url, {
+		method: 'POST',  //HTTP 메서드 post로 지정
 		headers: {
-			'Content-Type' : 'application/json' //헤더를 설정하여 보낼 데이터가 json임을 알림
+			'Content-Type' : 'application/json' //보낼 데이터 json으로 설정
 		},
-		body: JSON.stringify(req) //객체를 json 문자열로 변환하여 전송  ----> 이부분 get방식때 어떻게 할건지 수정해야 
+		body: JSON.stringify(req)
 	})
-	.then(response => {  //서버에서의 응답 처리하는 코드
+	.then(response => { 
 		if (!response.ok) {  //응답상태코드가 성공이 아닐 경우(!200~299)이 아닐 경우
-			throw new Error('Network response was not ok');  //에러 발생 -> catch로 넘어감
+			throw new Error('Network response was not ok');  //에러 발생 -> catch
 		}
 		return response.json(); //응답 데이터를 json 형식으로 변환하여 반환
 	})
 	.then(data => {  //서버로부터 받은 응답 메세지
-		alert(data.msg);
-		window.location.reload();
+		alert(data.responseObject.message);
+		window.location.reload(); //
 	})
 	.catch(error => {
 		alert('죄송합니다. 다시 시도해주십시오')
-		console.error('information_account having error', error);
-		//window.location.href = '/main';
+		console.error('sever having error', error);
 	})
 }
     
