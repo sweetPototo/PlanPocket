@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.pp.ppProject.domain.AccountEntity;
 import com.pp.ppProject.domain.DepoWithdEntity;
-import com.pp.ppProject.domain.enums.ResultCode;
+import com.pp.ppProject.dto.enums.ResultCode;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
-import com.pp.ppProject.dto.response.Message;
+import com.pp.ppProject.dto.response.ResponseObject;
 import com.pp.ppProject.repository.AccountRepository;
 import com.pp.ppProject.repository.DepoWithdRepository;
 
@@ -29,14 +29,14 @@ public class InformationServiceImpl implements InformationService {
 	private final DepoWithdRepository depoRepository;
 	
 	@Override
-	public Message addAccount(AccountRequestDTO dto) {
+	public ResponseObject addAccount(AccountRequestDTO dto) {
 		AccountEntity account = AccountEntity.createAccountEntity(dto);
 		log.info("added account name : " + account.getAccountName());
 		try {
 			accountRepository.save(account);
-			return Message.settingMsg(ResultCode.SUCCESS_CREATE, "계좌 저장 성공");
+			return ResponseObject.settingMsg(ResultCode.SUCCESS_CREATE, "계좌 저장 성공");
 		} catch(ConstraintViolationException e) {  //제약 조건 위반 시
-			return Message.settingMsg(ResultCode.FAILED_BADREQUEST, "제약조건 위반으로 인한 저장 실패");
+			return ResponseObject.settingMsg(ResultCode.FAILED_BADREQUEST, "제약조건 위반으로 인한 저장 실패");
 		}
 	}
 
@@ -64,7 +64,7 @@ public class InformationServiceImpl implements InformationService {
 
 	//DepoWithd에 거래내역이 입력되면 트리거가 발동 -> account에 자동으로 잔액 update
 	@Override
-	public Message addTran(DepoWithdDTO dto) {
+	public ResponseObject addTran(DepoWithdDTO dto) {
 		Optional<AccountEntity> accountOt = accountRepository.findById(dto.getAccountNo());
 		AccountEntity account = changeEntityAccount(accountOt);
 		int balance = 0;

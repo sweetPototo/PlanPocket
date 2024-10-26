@@ -1,4 +1,5 @@
 function accountCheck(memberNo) { 
+	console.log(memberNo);
    if(document.getElementById('accountName')==""){
           alert('계좌 이름을 지정해주세요.');
           f.accountName.focus();
@@ -40,7 +41,7 @@ function submit(memberNo) {
 		memberNo : memberNo, //회원번호
 		accountBalance : document.getElementById('accountBalance').value //계좌 잔액
 	}
-	const url = '/information/' + accountRequest.memberNo + '/account';
+	const url = '/information/' + memberNo + '/account';
 	console.log(url);
 	
 	fetchMethod_post(accountRequest, url);

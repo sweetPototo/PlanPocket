@@ -3,7 +3,7 @@ package com.pp.ppProject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.pp.ppProject.domain.enums.TransactionCategory;
+import com.pp.ppProject.dto.enums.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.service.InformationService;
 import com.pp.ppProject.service.InformationServiceImpl;

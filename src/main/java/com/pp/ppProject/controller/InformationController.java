@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pp.ppProject.domain.enums.AccountCategory;
-import com.pp.ppProject.domain.enums.TransactionCategory;
+import com.pp.ppProject.dto.enums.AccountCategory;
+import com.pp.ppProject.dto.enums.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.InputTransactionRequestDTO;
-import com.pp.ppProject.dto.response.Message;
+import com.pp.ppProject.dto.response.ResponseObject;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
 import com.pp.ppProject.service.InformationService;
 
@@ -56,7 +56,7 @@ public class InformationController {
 	   }
 	
 	@PostMapping("/{memberNo}/input")
-	public ResponseEntity<Message> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
+	public ResponseEntity<ResponseObject> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
 			HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
 		
 		log.info("Controller accountNo = {}", inputDto.getAccountNo());
@@ -75,13 +75,12 @@ public class InformationController {
 		return null;
 	}
 	
-	//Response Entity 만든 후 httpstatus에 따른 결과값 지정해주기
-	//@PostMapping(value = "/{memberNo}/account", consumes = "application/json")
-	@PostMapping(value = "/{memberNo}/account")
-	public ResponseEntity<Message> accountPost(@RequestBody AccountRequestDTO dto) {
+	@PostMapping(value = "/{memberNo}/account", consumes = "application/json")
+	//@PostMapping(value = "/{memberNo}/account")
+	public ResponseEntity<ResponseObject> accountPost(@RequestBody AccountRequestDTO dto) {
 		log.info("계좌 등록 시작");
-		Message msg = infoService.addAccount(dto);
-		return new ResponseEntity<Message>(msg, HttpStatus.OK);
+		ResponseObject msg = infoService.addAccount(dto);
+		return new ResponseEntity<ResponseObject>(msg, HttpStatus.OK);
 	}
 	
 }

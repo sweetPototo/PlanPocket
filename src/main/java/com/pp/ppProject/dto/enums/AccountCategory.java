@@ -1,4 +1,4 @@
-package com.pp.ppProject.domain.enums;
+package com.pp.ppProject.dto.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
