@@ -81,13 +81,14 @@ public class InformationControllerTest {
 		
 		ResponseObject responseObject = ResponseObject.settingMsg(ResultCode.SUCCESS_CREATE, "등록 완료");
 		
-		//when : 동작할 메서드 설정 -> 해당 메서드가 실행되면(when) 이 객체를 반환하라(thenReturn)
+		//given : 동작할 메서드 설정 -> 해당 메서드가 실행되면(when) 이 객체를 반환하라(thenReturn)
 		when(infoService.addAccount(accountRequestDto)).thenReturn(responseObject);
 		
-		//API 호출 및 검증
-		mockMvc.perform(post("/information/1/account")
+		//when : API 호출
+		mockMvc.perform(post("/information/account")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(accountRequestDto)))
+		//then : 검증
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.message").value(responseObject.getMessage()));
 		/*
