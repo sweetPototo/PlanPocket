@@ -55,15 +55,14 @@ public class InformationController {
 		return mav;
 	   }
 	
-	@PostMapping("/{memberNo}/input")
+	@PostMapping("/transaction")
 	public ResponseEntity<ResponseObject> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
 			HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
-		
 		log.info("Controller accountNo = {}", inputDto.getAccountNo());
 		inputDto.setMemberNo(memberNo);
 		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto);
-		String msg, url = "";
-//		boolean isAdd = infoService.addTran(dto);
+		ResponseObject responseObject = infoService.addTran(dto);
+		return new ResponseEntity<ResponseObject>(responseObject, responseObject.getCode().getStatus());
 //		if(isAdd){
 //			msg = "가계부가 입력되었습니다.";
 //			url = "/information/" + dto.getMemberNo();
@@ -72,7 +71,7 @@ public class InformationController {
 //			url = "";
 //		}
 //		HashMap<String, String> map = setMessage(msg, url);
-		return null;
+//		return null;
 	}
 	
 	@PostMapping(value = "/account")
