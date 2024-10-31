@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.pp.ppProject.domain.AccountEntity;
 import com.pp.ppProject.domain.DepoWithdEntity;
 import com.pp.ppProject.dto.enums.ResultCode;
+import com.pp.ppProject.dto.enums.TransactionType;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
 import com.pp.ppProject.dto.response.ResponseObject;
+import com.pp.ppProject.exception.UndeterminedException;
 import com.pp.ppProject.repository.AccountRepository;
 import com.pp.ppProject.repository.DepoWithdRepository;
 
@@ -68,18 +70,19 @@ public class InformationServiceImpl implements InformationService {
 		Optional<AccountEntity> accountOt = accountRepository.findById(dto.getAccountNo());
 		AccountEntity account = changeEntityAccount(accountOt);
 		int balance = 0;
-		//0 = 지출, 1 = 입금
-		if(dto.getTranType() == 1) {
+		if(dto.getTranType() == TransactionType.DEPOSIT) {  //입금
 			balance = account.getAccountBalance() + dto.getTranAmount();
 		}else {
 			balance = account.getAccountBalance() - dto.getTranAmount();
 		}
 		dto.setBalance(balance);
-		DepoWithdEntity depo = DepoWithdEntity.createTransactionEntity(dto);
 		try {
+			DepoWithdEntity depo = DepoWithdEntity.of(dto);
 			depoRepository.save(depo);
 		}catch(ConstraintViolationException e) {
 			log.info("거래내역 저장 실패 : {}", getClass().getName());
+		}catch(UndeterminedException e) {
+			
 		}
 		return null;//이후 수정
 	}

@@ -2,6 +2,7 @@ package com.pp.ppProject.dto.request;
 
 import com.pp.ppProject.dto.enums.TransactionCategory;
 import com.pp.ppProject.dto.enums.TransactionType;
+import com.pp.ppProject.exception.UndeterminedException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class DepoWithdDTO {
 	private int accountNo;
 	private String tranDate;
 	private TransactionType tranType;
-	private TransactionCategory tranCategoryCode;
+	private TransactionCategory tranCategory;
 	private int tranAmount;
 	private int tranBalance;
 	private String tranDetail;
@@ -27,26 +28,21 @@ public class DepoWithdDTO {
 		this.tranBalance = balance;
 	}
 	
-	private static TransactionType transperTransactionType(String dtoType) throws Exception {
-		switch(dtoType) {
-			case "0" : 
-				return TransactionType.WITHDRAW;
-			case "1" : 
-				return TransactionType.DEPOSIT;
-			default : 
-				throw new Exception();  //Exception 수정 예정
+	public static DepoWithdDTO of(InputTransactionRequestDTO inputDto) throws UndeterminedException {
+		try {
+			DepoWithdDTO dto =  DepoWithdDTO.builder()
+					.accountNo(Integer.parseInt(inputDto.getAccountNo()))
+					.tranDate(inputDto.getTranDate())
+					.tranType(TransactionType.transperTransactionType(inputDto.getTranType()))
+					.tranCategory(TransactionCategory.transperTransactionCategory(inputDto.getTranCategoryCode()))
+					.tranAmount(Integer.parseInt(inputDto.getTranAmount()))
+					.tranDetail(inputDto.getTranDetail())
+					.memberNo(inputDto.getMemberNo())
+					.build();
+			return dto;
+		}catch (UndeterminedException e) {
+			throw e;
 		}
-	}
-	
-	public static DepoWithdDTO createTranDTO(InputTransactionRequestDTO inputDto) {
-		return DepoWithdDTO.builder()
-				.accountNo(Integer.parseInt(inputDto.getAccountNo()))
-				.tranDate(inputDto.getTranDate())
-				.tranType(transperTransactionType(inputDto.getTranType()))
-				.tranCategoryCode(Integer.parseInt(inputDto.getTranCategoryCode()))
-				.tranAmount(Integer.parseInt(inputDto.getTranAmount()))
-				.tranDetail(inputDto.getTranDetail())
-				.memberNo(inputDto.getMemberNo())
-				.build();
+		
 	}
 }

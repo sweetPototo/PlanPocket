@@ -1,15 +1,12 @@
 package com.pp.ppProject.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pp.ppProject.dto.enums.AccountCategory;
+import com.pp.ppProject.dto.enums.ResultCode;
 import com.pp.ppProject.dto.enums.TransactionCategory;
 import com.pp.ppProject.dto.request.AccountDTO;
 import com.pp.ppProject.dto.request.AccountRequestDTO;
 import com.pp.ppProject.dto.request.InputTransactionRequestDTO;
 import com.pp.ppProject.dto.response.ResponseObject;
+import com.pp.ppProject.exception.UndeterminedException;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
 import com.pp.ppProject.service.InformationService;
 
@@ -37,16 +36,9 @@ public class InformationController {
 	
 	public final InformationService infoService;
 	
-	private HashMap<String, String> setMessage(String msg, String url) {
-		HashMap<String, String> map = new HashMap<>();
-		map.put("msg", msg);
-		map.put("url", url);
-		return map;
-	}
-	
 	@GetMapping("/{memberNo}")
-	   public ModelAndView input(HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
-		List<AccountDTO> account = infoService.selectMemberNo(memberNo);
+	   public ModelAndView input(HttpServletRequest req) {
+		List<AccountDTO> account = infoService.selectMemberNo((int) req.getSession().getAttribute("memberNo"));
 		Map<String,Object> result = new HashMap<>();
 		req.setAttribute("account", account);
 		req.setAttribute("tCate", TransactionCategory.values());
@@ -56,26 +48,23 @@ public class InformationController {
 	   }
 	
 	@PostMapping("/transaction")
-	public ResponseEntity<ResponseObject> inputTransaction(@RequestBody InputTransactionRequestDTO inputDto, 
-			HttpServletRequest req, @PathVariable("memberNo") int memberNo) {
+	public ResponseEntity<ResponseObject> inputTransaction(
+				@Valid @RequestBody InputTransactionRequestDTO inputDto, HttpServletRequest req) {
 		log.info("Controller accountNo = {}", inputDto.getAccountNo());
-		inputDto.setMemberNo(memberNo);
-		DepoWithdDTO dto = DepoWithdDTO.createTranDTO(inputDto);
+		inputDto.setMemberNo((int) req.getSession().getAttribute("memberNo"));
+		DepoWithdDTO dto = new DepoWithdDTO();
+		try {
+			dto = DepoWithdDTO.of(inputDto);
+		} catch (UndeterminedException e) {
+			return new ResponseEntity<ResponseObject>(ResultCode.FAILED_UNDETERMINEDTYPE.getStatus());
+		}
 		ResponseObject responseObject = infoService.addTran(dto);
 		return new ResponseEntity<ResponseObject>(responseObject, responseObject.getCode().getStatus());
-//		if(isAdd){
-//			msg = "가계부가 입력되었습니다.";
-//			url = "/information/" + dto.getMemberNo();
-//		}else {
-//			msg = "가계부가 입력되지 않았습니다. 다시 시도해주세요.";
-//			url = "";
-//		}
-//		HashMap<String, String> map = setMessage(msg, url);
-//		return null;
+
 	}
 	
 	@PostMapping(value = "/account")
-	public ResponseEntity<ResponseObject> accountPost(@RequestBody AccountRequestDTO dto) {
+	public ResponseEntity<ResponseObject> accountPost(@Valid @RequestBody AccountRequestDTO dto) {
 		log.info("계좌 등록 시작");
 		ResponseObject responseObject = infoService.addAccount(dto);
 		return new ResponseEntity<ResponseObject>(responseObject, responseObject.getCode().getStatus());

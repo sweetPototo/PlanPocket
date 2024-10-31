@@ -6,7 +6,10 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.pp.ppProject.dto.enums.TransactionCategory;
+import com.pp.ppProject.dto.enums.TransactionType;
 import com.pp.ppProject.dto.request.DepoWithdDTO;
+import com.pp.ppProject.exception.UndeterminedException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,7 +51,7 @@ public class DepoWithdEntity {
 	@JoinColumn(name = "accountNo")
 	private AccountEntity account;
 	
-	private int tranType;
+	private TransactionType tranType;
 	
 	private int tranAmount;
 	
@@ -56,10 +59,10 @@ public class DepoWithdEntity {
 	
 	@DateTimeFormat(pattern = "yy/MM/dd")
 	private LocalDate tranDate;
-	private int tranCategory;
+	private TransactionCategory tranCategory;
 	private String tranDetail;
 	
-	public static DepoWithdEntity createTransactionEntity(DepoWithdDTO dto) {
+	public static DepoWithdEntity of(DepoWithdDTO dto) throws UndeterminedException {
 		MemberEntity m = MemberEntity.builder().memberNo(dto.getMemberNo()).build();
 		AccountEntity a = AccountEntity.builder().accountNo(dto.getAccountNo()).build();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
@@ -71,7 +74,7 @@ public class DepoWithdEntity {
 				.tranAmount(dto.getTranAmount())
 				.tranBalance(dto.getTranBalance())
 				.tranDate(LocalDate.parse(dto.getTranDate(), formatter))
-				.tranCategory(dto.getTranCategoryCode())
+				.tranCategory(dto.getTranCategory())
 				.tranDetail(dto.getTranDetail())
 				.build();
 	}

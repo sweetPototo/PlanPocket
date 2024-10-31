@@ -1,5 +1,7 @@
 package com.pp.ppProject.dto.enums;
 
+import com.pp.ppProject.exception.UndeterminedException;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,4 +18,26 @@ public enum TransactionCategory {
 	
 	private final int tranCateCode;
 	private final String tranCateName;
+	
+	public static TransactionCategory transperTransactionCategory(String dtoType) throws UndeterminedException {
+		switch(dtoType) {
+			case "1" : 
+				return TransactionCategory.UTILITYES;
+			case "2" : 
+				return TransactionCategory.FOOD;
+			case "3" :
+				return TransactionCategory.HOBBY;
+			case "4" :
+				return TransactionCategory.DAILY;
+			case "5" :
+				return TransactionCategory.MEDICAL;
+			case "6" :
+				return TransactionCategory.TRANSPORT;
+			case "7" :
+				return TransactionCategory.ETC;
+			default : 
+				throw new UndeterminedException();
+		}
+	}
+	
 }

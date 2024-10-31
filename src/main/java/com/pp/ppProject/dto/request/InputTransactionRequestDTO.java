@@ -1,9 +1,7 @@
 package com.pp.ppProject.dto.request;
 
-import java.beans.ConstructorProperties;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +9,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InputTransactionRequestDTO {
 
+	@NotBlank(message = "계좌 정보를 입력해주세요.")
 	private String accountNo;
+	
+	@NotNull(message = "거래일자를 입력해주세요.")
 	private String tranDate;
+	
+	@NotBlank(message = "지출/입금을 선택해주세요.")
 	private String tranType;
+	
+	@NotBlank(message = "거래 카테고리를 선택해주세요.")
 	private String tranCategoryCode;
+	
+	@NotBlank(message = "금액을 입력해주세요.")
 	private String tranAmount;
+	
+	@NotNull(message = "거래 내용을 입력해주세요.")
 	private String tranDetail;
+	
 	private int memberNo;
 	
 	public void setMemberNo(int memberNo) {

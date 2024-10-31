@@ -56,6 +56,9 @@ dependencies {
 	// Json 라이브러리 https://mvnrepository.com/artifact/org.json/json
 	//implementation group: 'org.json', name: 'json', version: '20240303'
 	
+	//Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	
 	implementation 'com.fasterxml.jackson.core:jackson-databind' //json 직렬화 역직렬화
     implementation 'com.fasterxml.jackson.core:jackson-core'     // 파싱 생성기
     implementation 'com.fasterxml.jackson.core:jackson-annotations'  //json관련 어노테이션
