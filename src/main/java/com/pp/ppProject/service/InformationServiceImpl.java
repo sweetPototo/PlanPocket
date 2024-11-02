@@ -43,7 +43,7 @@ public class InformationServiceImpl implements InformationService {
 	}
 
 	@Override
-	public List<AccountDTO> selectMemberNo(int memberNo) {
+	public List<AccountDTO> selectMemberNo(int memberNo) {  
 		List<AccountEntity> entity = accountRepository.findByMemberMemberNo(memberNo);
 		List<AccountDTO> list = new ArrayList<>();
 		for(AccountEntity e : entity) {
