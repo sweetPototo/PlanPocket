@@ -30,16 +30,7 @@ public class AccountRequestDTO {
 	@NotBlank(message = "계좌 잔액을 입력해주세요.")
 	private String accountBalance;
 	
-	 @ConstructorProperties({"accountName", "accountCategory", "accountDetail", "memberNo"})
-	    public AccountRequestDTO(String accountName, String accountCategory, String accountDetail, String memberNo, String accountBalance) {
-	        this.accountName = accountName;
-	        this.accountCategory = accountCategory;
-	        this.accountDetail = accountDetail;
-	        this.memberNo = memberNo;
-	        this.accountBalance = accountBalance;
-	    }
-	
-	 public void memberNoSetting(String memberNo) {
-		 this.memberNo = memberNo;
+	public void memberNoSetting(String memberNo) {
+		this.memberNo = memberNo;
 	 }
 }

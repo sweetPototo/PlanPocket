@@ -29,20 +29,14 @@ public class DepoWithdDTO {
 	}
 	
 	public static DepoWithdDTO of(InputTransactionRequestDTO inputDto) throws UndeterminedException {
-		try {
-			DepoWithdDTO dto =  DepoWithdDTO.builder()
-					.accountNo(Integer.parseInt(inputDto.getAccountNo()))
-					.tranDate(inputDto.getTranDate())
-					.tranType(TransactionType.transperTransactionType(inputDto.getTranType()))
-					.tranCategory(TransactionCategory.transperTransactionCategory(inputDto.getTranCategoryCode()))
-					.tranAmount(Integer.parseInt(inputDto.getTranAmount()))
-					.tranDetail(inputDto.getTranDetail())
-					.memberNo(inputDto.getMemberNo())
-					.build();
-			return dto;
-		}catch (UndeterminedException e) {
-			throw e;
-		}
-		
+		return DepoWithdDTO.builder()
+				.accountNo(Integer.parseInt(inputDto.getAccountNo()))
+				.tranDate(inputDto.getTranDate())
+				.tranType(TransactionType.transperTransactionType(inputDto.getTranType()))
+				.tranCategory(TransactionCategory.transperTransactionCategory(inputDto.getTranCategoryCode()))
+				.tranAmount(Integer.parseInt(inputDto.getTranAmount()))
+				.tranDetail(inputDto.getTranDetail())
+				.memberNo(inputDto.getMemberNo())
+				.build();
 	}
 }

@@ -53,15 +53,12 @@ public class AccountEntity {
 //				.build();
 //	}
 	
-	public static AccountEntity createAccountEntity(AccountRequestDTO dto) {
-		MemberEntity m = MemberEntity.builder()
-				.memberNo(Integer.parseInt(dto.getMemberNo()))
-				.build();
+	public static AccountEntity of(AccountRequestDTO dto, MemberEntity member) {
 		return AccountEntity.builder()
 				.accountName(dto.getAccountName())
 				.accountCategory(Integer.parseInt(dto.getAccountCategory()))
 				.accountDetail(dto.getAccountDetail())
-				.member(m)
+				.member(member)
 				.accountBalance(Integer.parseInt(dto.getAccountBalance()))
 				.build();
 	}

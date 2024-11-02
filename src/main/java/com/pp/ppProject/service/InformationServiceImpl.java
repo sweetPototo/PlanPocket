@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.pp.ppProject.domain.MemberEntity;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import com.pp.ppProject.dto.response.ResponseObject;
 import com.pp.ppProject.exception.UndeterminedException;
 import com.pp.ppProject.repository.AccountRepository;
 import com.pp.ppProject.repository.DepoWithdRepository;
+import com.pp.ppProject.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InformationServiceImpl implements InformationService {
 
+	private final MemberRepository memberRepository;
 	private final AccountRepository accountRepository;
-	private final DepoWithdRepository depoRepository;
+	private final DepoWithdRepository depoWithRepository;
 	
 	@Override
 	public ResponseObject addAccount(AccountRequestDTO dto) {
-		AccountEntity account = AccountEntity.createAccountEntity(dto);
-		log.info("added account name : " + account.getAccountName());
+		MemberEntity member = memberRepository.findById(Integer.parseInt(dto.getMemberNo()));
+		AccountEntity account = AccountEntity.of(dto, member);
 		try {
 			accountRepository.save(account);
 			return ResponseObject.settingMsg(ResultCode.SUCCESS_CREATE, "계좌 저장 성공");
@@ -43,7 +46,7 @@ public class InformationServiceImpl implements InformationService {
 	}
 
 	@Override
-	public List<AccountDTO> selectMemberNo(int memberNo) {  
+	public List<AccountDTO> selectMemberNo(int memberNo) {
 		List<AccountEntity> entity = accountRepository.findByMemberMemberNo(memberNo);
 		List<AccountDTO> list = new ArrayList<>();
 		for(AccountEntity e : entity) {
@@ -78,7 +81,7 @@ public class InformationServiceImpl implements InformationService {
 		dto.setBalance(balance);
 		try {
 			DepoWithdEntity depo = DepoWithdEntity.of(dto);
-			depoRepository.save(depo);
+			depoWithRepository.save(depo);
 		}catch(ConstraintViolationException e) {
 			log.info("거래내역 저장 실패 : {}", getClass().getName());
 		}catch(UndeterminedException e) {

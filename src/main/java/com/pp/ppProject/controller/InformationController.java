@@ -37,7 +37,7 @@ public class InformationController {
 	public final InformationService infoService;
 	
 	@GetMapping("/{memberNo}")
-	   public ModelAndView input(HttpServletRequest req) {
+	ModelAndView input(HttpServletRequest req) {
 		List<AccountDTO> account = infoService.selectMemberNo((int) req.getSession().getAttribute("memberNo"));
 		Map<String,Object> result = new HashMap<>();
 		req.setAttribute("account", account);
@@ -48,7 +48,7 @@ public class InformationController {
 	   }
 	
 	@PostMapping("/transaction")
-	public ResponseEntity<ResponseObject> inputTransaction(
+	ResponseEntity<ResponseObject> inputTransaction(
 				@Valid @RequestBody InputTransactionRequestDTO inputDto, HttpServletRequest req) {
 		log.info("Controller accountNo = {}", inputDto.getAccountNo());
 		inputDto.setMemberNo((int) req.getSession().getAttribute("memberNo"));
@@ -64,7 +64,7 @@ public class InformationController {
 	}
 	
 	@PostMapping(value = "/account")
-	public ResponseEntity<ResponseObject> accountPost(@Valid @RequestBody AccountRequestDTO dto) {
+	ResponseEntity<ResponseObject> accountPost(@Valid @RequestBody AccountRequestDTO dto) {
 		log.info("계좌 등록 시작");
 		ResponseObject responseObject = infoService.addAccount(dto);
 		return new ResponseEntity<ResponseObject>(responseObject, responseObject.getCode().getStatus());
